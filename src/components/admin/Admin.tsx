@@ -1,6 +1,6 @@
 import DefaultSettings from '@/components/admin/DefaultSettings';
 import PlayersList from '@/components/admin/PlayersList';
-import { useConfigSlice } from '@/store/configSlice';
+import { useConfigData } from '@/store/configSlice';
 import clsx from 'clsx';
 import AddPlayer from './AddPlayer';
 /*
@@ -18,12 +18,12 @@ tic toc ?                               V
 */
 
 const Admin = () => {
-  const { appInitialized, numOfQuest } = useConfigSlice();
+  const { appInitialized } = useConfigData();
 
   return (
     <div className="max-w-full">
-      <h1 className={clsx(' text-center text-5xl uppercase')}>admin</h1>
-      <div className="mt-10" />
+      <h1 className={clsx(' text-center text-4xl uppercase')}>admin</h1>
+      <div className="mt-20" />
 
       {!appInitialized && <DefaultSettings />}
       {appInitialized && (

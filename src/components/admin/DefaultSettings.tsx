@@ -1,11 +1,10 @@
-import { useConfigSlice } from '@/store/configSlice';
+import { useConfigActions, useConfigData } from '@/store/configSlice';
 import clsx from 'clsx';
 import { useState } from 'react';
 
 const DefaultSettings = () => {
-  const { setConfig, initialPoint, numOfQuest, timePerQuest } =
-    useConfigSlice();
-
+  const { initialPoint, numOfQuest, timePerQuest } = useConfigData();
+  const configActions = useConfigActions();
   const [appPoint, setAppPoint] = useState(initialPoint);
   const [appNumOfQuest, setAppNumOfQuest] = useState(numOfQuest);
   const [appTimePerQuest, setAppTimePerQuest] = useState(timePerQuest);
@@ -16,10 +15,11 @@ const DefaultSettings = () => {
         onSubmit={(e) => {
           e.preventDefault();
 
-          setConfig({
+          configActions.setConfig({
             initialPoint: appPoint,
             numOfQuest: appNumOfQuest,
             timePerQuest: appTimePerQuest,
+            playing: false,
             appInitialized: true,
           });
         }}

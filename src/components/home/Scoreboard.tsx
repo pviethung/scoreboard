@@ -1,14 +1,15 @@
+import { useListenPlayers } from '@/broadcast';
+import { Player } from '@/types/Player';
 import clsx from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
 import Arrow from '../elements/Arrow';
 import Avatar from '../elements/Avatar';
 
-type ScoreboardLineProps = {
-  name: string;
-  point: string;
-  rank: number;
-};
-
-const ScoreboardLine = ({ name, point, rank }: ScoreboardLineProps) => {
+const ScoreboardLine = ({
+  player: { avatar, id, name, point, prevRank, rank },
+}: {
+  player: Player;
+}) => {
   return (
     <div
       className={clsx(
@@ -16,333 +17,33 @@ const ScoreboardLine = ({ name, point, rank }: ScoreboardLineProps) => {
         'after:absolute after:left-[10%] after:bottom-0 after:h-[2px] after:w-4/5 after:bg-primary after:content-[""]'
       )}
     >
-      <div className={clsx('flex items-center')}>
-        <div className="mr-4 w-20">
-          <Avatar src="" />
+      <div className={clsx('flex w-4/5 items-center')}>
+        <div className="mr-6 w-20">
+          <Avatar src={avatar} />
         </div>
-        <div>
-          <p className={clsx('flex-2 mb-2 font-bold')}>{name}</p>
-          <div className={clsx('flex items-center space-x-2')}>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-red-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-green-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-red-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-green-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-red-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-green-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-red-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-green-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-red-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-green-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-red-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-green-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-red-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-green-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-red-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-green-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-red-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-green-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-red-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-green-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 12.75l6 6 9-13.5"
-                />
-              </svg>
-            </span>
+        <div className="max-w-2xl">
+          <p className={clsx('flex-2 mb-2 font-bold line-clamp-1')}>{name}</p>
+          <div className={clsx('flex items-center space-x-4')}>
+            <span className={clsx('text-2xl text-green-500')}>+</span>
+            <span className={'text-2xl text-red-500'}>-</span>
+            <span className={clsx('text-2xl text-green-500')}>+</span>
+            <span className={'text-2xl text-red-500'}>-</span>
+            <span className={clsx('text-2xl text-green-500')}>+</span>
+            <span className={'text-2xl text-red-500'}>-</span>
+            <span className={clsx('text-2xl text-green-500')}>+</span>
+            <span className={'text-2xl text-red-500'}>-</span>
+            <span className={clsx('text-2xl text-green-500')}>+</span>
+            <span className={'text-2xl text-red-500'}>-</span>
+            <span className={clsx('text-2xl text-green-500')}>+</span>
+            <span className={'text-2xl text-red-500'}>-</span>
+            <span className={clsx('text-2xl text-green-500')}>+</span>
+            <span className={'text-2xl text-red-500'}>-</span>
+            <span className={clsx('text-2xl text-green-500')}>+</span>
+            <span className={'text-2xl text-red-500'}>-</span>
+            <span className={clsx('text-2xl text-green-500')}>+</span>
+            <span className={'text-2xl text-red-500'}>-</span>
+            <span className={clsx('text-2xl text-green-500')}>+</span>
+            <span className={'text-2xl text-red-500'}>-</span>
           </div>
         </div>
       </div>
@@ -368,21 +69,31 @@ const ScoreboardLine = ({ name, point, rank }: ScoreboardLineProps) => {
 };
 
 const Scoreboard = () => {
+  const players = useListenPlayers();
+  console.log(players);
+
   return (
     <div className={clsx('mx-auto w-4/5')}>
-      <div className={clsx('mb-4 flex px-6 text-2xl')}>
-        <p className={clsx('flex-1')}>Team</p>
-        <p className={clsx('ml-auto w-24 text-center')}>Point</p>
-        <p className={clsx('w-24 text-center')}>Rank</p>
-      </div>
-      <ul>
-        <li>
-          <ScoreboardLine name="Darlene Robertson" point="250" rank={4} />
-        </li>
-        <li>
-          <ScoreboardLine name="Darlene Robertson" point="250" rank={4} />
-        </li>
-      </ul>
+      {players && players.length > 0 && (
+        <>
+          <div className={clsx('mb-4 flex px-6 text-center text-2xl')}>
+            <p className={clsx('flex-1')}>Team</p>
+            <p className={clsx('ml-auto w-24')}>Point</p>
+            <p className={clsx('w-24')}>Rank</p>
+          </div>
+          <ul>
+            {players.map((p) => {
+              return (
+                <AnimatePresence>
+                  <motion.li layout key={p.id}>
+                    <ScoreboardLine player={p} />
+                  </motion.li>
+                </AnimatePresence>
+              );
+            })}
+          </ul>
+        </>
+      )}
     </div>
   );
 };

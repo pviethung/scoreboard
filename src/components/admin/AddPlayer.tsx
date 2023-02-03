@@ -1,16 +1,15 @@
+import { useConfigData } from '@/store/configSlice';
+import { usePlayersActions } from '@/store/playersSlice';
+import { Player } from '@/types/Player';
+import randomAvatar from '@/utils/randomAvatar';
+import randomId from '@/utils/randomId';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
-import { usePlayersSlice } from '../../store/playersSlice';
-import { Player } from '../../types/Player';
-import randomAvatar from '../../utils/randomAvatar';
-import randomId from '../../utils/randomId';
+import { useState } from 'react';
 
 const AddPlayer = () => {
   const [name, setName] = useState('');
-  const { players, add } = usePlayersSlice();
-  useEffect(() => {
-    console.log(players);
-  }, [players]);
+  const { add } = usePlayersActions();
+  const { initialPoint } = useConfigData();
 
   return (
     <form
@@ -18,13 +17,14 @@ const AddPlayer = () => {
         e.preventDefault();
         const player: Player = {
           id: randomId(),
-          isLost: false,
           name,
-          point: 50,
+          point: initialPoint,
           avatar: randomAvatar(),
           rank: 0,
+          prevRank: 0,
         };
         add(player);
+        // set rank
         setName('');
       }}
       className={clsx('flex')}

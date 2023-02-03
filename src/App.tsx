@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import Admin from './components/admin/Admin';
 import LeaderChart from './components/home/LeaderChart';
 import Scoreboard from './components/home/Scoreboard';
-import randomAvatar from './utils/randomAvatar';
 
 /*
   
@@ -59,8 +58,9 @@ if lose
 
 
 
+
 */
-randomAvatar();
+
 const App = () => {
   const [path, setPath] = useState('');
   useEffect(() => {

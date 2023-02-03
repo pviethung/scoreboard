@@ -1,16 +1,13 @@
 export interface Player {
-    id: string,
-    name: string,
-    avatar: string,
-    rank: Number,
-    point: number,
-    isLost: boolean,
-    items?: {
-        "plus": {}
-    }
+  id: string;
+  name: string;
+  avatar: string;
+  rank: number;
+  prevRank: number;
+  point: number; // point === 0 -> lose
 }
 
 interface PlayerItem {
-    rule: string
-    icon: string
+  rule: string;
+  icon: string;
 }
