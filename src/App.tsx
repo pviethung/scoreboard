@@ -53,12 +53,24 @@ if lose
 
 | GAME END |
 
+/*
+
+history: [
+  {
+    used_item: itemsType | null,
+    earnedPoint: -10,
+    prevPoint: 50
+  }
+]
 
 
+////
+  turns: [
+    {
+      players: ids[],
 
-
-
-
+    }
+  ]
 */
 
 const App = () => {

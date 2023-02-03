@@ -25,6 +25,14 @@ const PlayersListItem = ({ id }: { id: string }) => {
         </div>
         <div className="w-56">
           <div className="text-xl line-clamp-2">{player.name}</div>
+          <select>
+            <option value="">Plus</option>
+            <option value="">Extra</option>
+            <option value="">Bonus</option>
+            <option value="">Shield</option>
+            <option value="">Nope</option>
+            <option value="">Attack</option>
+          </select>
         </div>
       </th>
       {new Array(currentQuest).fill(true).map((_, i) => (

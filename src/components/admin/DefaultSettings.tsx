@@ -3,10 +3,11 @@ import clsx from 'clsx';
 import { useState } from 'react';
 
 const DefaultSettings = () => {
-  const { initialPoint, numOfQuest, timePerQuest } = useConfigData();
+  const { initialPoint, numOfQuest, timePerQuest, numOfTeam } = useConfigData();
   const configActions = useConfigActions();
   const [appPoint, setAppPoint] = useState(initialPoint);
   const [appNumOfQuest, setAppNumOfQuest] = useState(numOfQuest);
+  const [appNumOfTeam, setAppNumOfTeam] = useState(numOfTeam);
   const [appTimePerQuest, setAppTimePerQuest] = useState(timePerQuest);
 
   return (
@@ -18,6 +19,7 @@ const DefaultSettings = () => {
           configActions.setConfig({
             initialPoint: appPoint,
             numOfQuest: appNumOfQuest,
+            numOfTeam: appNumOfTeam,
             timePerQuest: appTimePerQuest,
             playing: false,
             appInitialized: true,
@@ -44,6 +46,17 @@ const DefaultSettings = () => {
             type="text"
             value={appNumOfQuest}
             onChange={(e) => setAppNumOfQuest(+e.target.value)}
+            className="input-bordered input w-full max-w-xs"
+          />
+        </div>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">NUMBER OF TEAMS</span>
+          </label>
+          <input
+            type="text"
+            value={appNumOfTeam}
+            onChange={(e) => setAppNumOfTeam(+e.target.value)}
             className="input-bordered input w-full max-w-xs"
           />
         </div>

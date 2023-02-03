@@ -5,6 +5,7 @@ import { shallow } from 'zustand/shallow';
 interface ConfigSlice {
   initialPoint: number;
   numOfQuest: number;
+  numOfTeam: number;
   currentQuest: number;
   timePerQuest: number; // seconds
   appInitialized: boolean;
@@ -20,6 +21,7 @@ interface ConfigSlice {
 const initialState = {
   initialPoint: 50,
   numOfQuest: 20,
+  numOfTeam: 5,
   timePerQuest: 60,
   currentQuest: 0,
   appInitialized: false,
