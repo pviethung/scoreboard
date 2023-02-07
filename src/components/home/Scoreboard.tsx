@@ -1,20 +1,16 @@
-import { useListenPlayers } from '@/broadcast';
+import Avatar from '@/components/elements/Avatar';
+import PlayerRank from '@/components/elements/PlayerRank';
 import { Player } from '@/types/Player';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import Arrow from '../elements/Arrow';
-import Avatar from '../elements/Avatar';
 
-const ScoreboardLine = ({
-  player: { avatar, id, name, point, prevRank, rank },
-}: {
-  player: Player;
-}) => {
+const ScoreboardLine = ({ player }: { player: Player }) => {
+  const { avatar, id, name, point, prevRank, rank } = player;
   return (
     <div
       className={clsx(
         'relative flex w-full rounded-md p-6 text-xl text-base-content',
-        'after:absolute after:left-[10%] after:bottom-0 after:h-[2px] after:w-4/5 after:bg-primary after:content-[""]'
+        'after:absolute after:left-[20%] after:bottom-0 after:h-[2px] after:w-3/5 after:bg-primary after:content-[""]'
       )}
     >
       <div className={clsx('flex w-4/5 items-center')}>
@@ -61,20 +57,20 @@ const ScoreboardLine = ({
           'flex w-24 items-center justify-center space-x-2 text-center'
         )}
       >
-        <span>{rank}</span>
-        <Arrow isDown={true} />
+        <PlayerRank player={player} />
+        {/* <span>{rank}</span>
+        <Arrow isDown={true} /> */}
       </div>
     </div>
   );
 };
 
-const Scoreboard = () => {
-  const players = useListenPlayers();
-  console.log(players);
+const Scoreboard = ({ players }: { players: Player[] | null }) => {
+  const restPlayers = players?.slice(3);
 
   return (
     <div className={clsx('mx-auto w-4/5')}>
-      {players && players.length > 0 && (
+      {restPlayers && restPlayers.length > 0 && (
         <>
           <div className={clsx('mb-4 flex px-6 text-center text-2xl')}>
             <p className={clsx('flex-1')}>Team</p>
@@ -82,15 +78,15 @@ const Scoreboard = () => {
             <p className={clsx('w-24')}>Rank</p>
           </div>
           <ul>
-            {players.map((p) => {
-              return (
-                <AnimatePresence>
+            <AnimatePresence>
+              {restPlayers.map((p) => {
+                return (
                   <motion.li layout key={p.id}>
                     <ScoreboardLine player={p} />
                   </motion.li>
-                </AnimatePresence>
-              );
-            })}
+                );
+              })}
+            </AnimatePresence>
           </ul>
         </>
       )}

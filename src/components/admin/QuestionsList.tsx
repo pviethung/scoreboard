@@ -7,7 +7,8 @@ import { memo } from 'react';
 const QuestionsList = () => {
   const { numOfQuest, currentQuest, playing } = useConfigData();
   const { addQuest } = useConfigActions();
-  const { reorder } = usePlayersActions();
+  const { reorderPlayers, newTurn, calculatePoints, checkRemainingItems } =
+    usePlayersActions();
 
   return (
     <tr>
@@ -16,7 +17,7 @@ const QuestionsList = () => {
         <th
           key={i}
           className={clsx('text-center', {
-            'text-red-500': currentQuest > i + 1,
+            'text-red-500': currentQuest > i + 1 || !playing,
             'text-green-500': currentQuest <= i + 1,
           })}
         >
@@ -32,13 +33,19 @@ const QuestionsList = () => {
         {playing && (
           <button
             onClick={() => {
-              addQuest();
-              const players = reorder();
+              calculatePoints();
+              checkRemainingItems();
+              newTurn();
+
+              const players = reorderPlayers(); // reorder board before start new turn
               postPlayers(players);
+
+              // start new quest
+              addQuest();
             }}
             className={clsx('btn-primary btn rounded-md uppercase')}
           >
-            new turn
+            new question
           </button>
         )}
       </th>

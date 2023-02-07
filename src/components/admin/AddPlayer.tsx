@@ -7,11 +7,12 @@ import clsx from 'clsx';
 import { useState } from 'react';
 
 const AddPlayer = () => {
-  const { initialPoint, playing, numOfTeam } = useConfigData();
+  const { initialPoint, numOfTeam } = useConfigData();
   const [names, setNames] = useState<string[]>(new Array(numOfTeam).fill(''));
-  const { add } = usePlayersActions();
+  const { addPlayer } = usePlayersActions();
+  const [submitted, setSubmitted] = useState(false);
 
-  if (playing) {
+  if (submitted) {
     return null;
   }
 
@@ -28,18 +29,21 @@ const AddPlayer = () => {
             point: initialPoint,
             avatar: randomAvatar(),
             rank: 0,
+            answers: [],
             prevRank: 0,
+            itemsLeft: [],
           };
-          add(player);
+          addPlayer(player);
         }
         setNames((prev) => new Array(numOfTeam).fill(''));
+        setSubmitted(true);
       }}
       className={clsx('flex')}
     >
-      <div className="form-control">
-        <div className="input-group">
-          {new Array(numOfTeam).fill(true).map((p, idx) => {
-            return (
+      <div className="flex flex-col items-center space-y-4">
+        {new Array(numOfTeam).fill(true).map((p, idx) => {
+          return (
+            <div key={idx}>
               <input
                 type="text"
                 placeholder={`PLAYER ${idx + 1} NAME`}
@@ -52,11 +56,11 @@ const AddPlayer = () => {
                   })
                 }
               />
-            );
-          })}
+            </div>
+          );
+        })}
 
-          <button className="btn-primary btn uppercase">add player</button>
-        </div>
+        <button className="btn-primary btn uppercase">add player</button>
       </div>
     </form>
   );

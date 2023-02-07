@@ -12,6 +12,34 @@
   }
 }
 @layer components {
+  .custom-select-height .select__menu-list {
+    height: 100px;
+  }
+  .items-select {
+    @apply w-full text-base-300;
+  }
+  .items-select .select__menu {
+    @apply bg-base-300 text-base-content;
+  }
+  .items-select .select__option--is-selected,
+  .items-select .select__option--is-focused {
+    @apply bg-transparent text-white;
+  }
+  .items-select .select__option:hover {
+    @apply bg-primary text-base-300;
+  }
+  .items-select .select__control {
+    @apply !border-primary bg-base-100 shadow-none;
+  }
+  .items-select .select__single-value {
+    @apply text-base-content;
+  }
+  .items-select .select__input-container {
+    @apply text-base-content;
+  }
+  .items-select .select__placeholder {
+    @apply text-base-content;
+  }
   .confetti {
     user-select: none;
     pointer-events: none;

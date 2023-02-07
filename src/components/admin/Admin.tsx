@@ -13,6 +13,9 @@ import AddPlayer from './AddPlayer';
 tic toc ?                               V
 - MC verify dap an
 - Cap nhat dap an -> tong ket diem      V
+- calculate point before post action
+
+// get history object
 
 
 */

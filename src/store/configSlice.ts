@@ -14,13 +14,14 @@ interface ConfigSlice {
     setConfig: (data: Omit<ConfigSlice, 'actions' | 'currentQuest'>) => void;
     addQuest: () => void;
     start: () => void;
+    stop: () => void;
     restart: () => void;
   };
 }
 
 const initialState = {
   initialPoint: 50,
-  numOfQuest: 20,
+  numOfQuest: Infinity,
   numOfTeam: 5,
   timePerQuest: 60,
   currentQuest: 0,
@@ -48,7 +49,11 @@ const createConfigSlice: StateCreator<ConfigSlice, [], [], ConfigSlice> = (
         state.playing = true;
         return state;
       }),
-
+    stop: () =>
+      set((state) => {
+        state.playing = false;
+        return state;
+      }),
     restart: () => {
       set((state) => {
         state = { ...initialState, actions: state.actions };

@@ -38,7 +38,7 @@ const DefaultSettings = () => {
             className="input-bordered input w-full max-w-xs"
           />
         </div>
-        <div className="form-control">
+        {/* <div className="form-control">
           <label className="label">
             <span className="label-text">NUMBER OF QUESTIONS</span>
           </label>
@@ -48,7 +48,7 @@ const DefaultSettings = () => {
             onChange={(e) => setAppNumOfQuest(+e.target.value)}
             className="input-bordered input w-full max-w-xs"
           />
-        </div>
+        </div> */}
         <div className="form-control">
           <label className="label">
             <span className="label-text">NUMBER OF TEAMS</span>
@@ -60,7 +60,7 @@ const DefaultSettings = () => {
             className="input-bordered input w-full max-w-xs"
           />
         </div>
-        <div className="form-control">
+        {/* <div className="form-control">
           <label className="label">
             <span className="label-text">TIME PER QUESTION</span>
           </label>
@@ -70,7 +70,7 @@ const DefaultSettings = () => {
             onChange={(e) => setAppTimePerQuest(+e.target.value)}
             className="input-bordered input w-full max-w-xs"
           />
-        </div>
+        </div> */}
         <button className={clsx('btn-primary btn-block btn')}>CONFIRM</button>
       </form>
     </div>
