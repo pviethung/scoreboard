@@ -4,6 +4,7 @@ import Avatar from '@/components/elements/Avatar';
 import Confetti from '@/components/elements/Confetti';
 import Logos from '@/components/elements/Logos';
 import PlayerRank from '@/components/elements/PlayerRank';
+import ItemEffect from '@/components/home/ItemEffect';
 import { Player } from '@/types/Player';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -59,7 +60,6 @@ const ItemInUse = ({ player }: { player: Player }) => {
   const [itemInUse, setItemInUse] = useState<typeof eventData>(null);
 
   useEffect(() => {
-    debugger;
     if (eventData?.playerId === player.id) {
       setItemInUse({ ...eventData });
       return;
@@ -86,15 +86,6 @@ const ItemInUse = ({ player }: { player: Player }) => {
 
 const LeaderChart = ({ players }: { players: Player[] | null }) => {
   const progress = useListenAppProgress();
-  console.log('progress', progress);
-
-  console.log(
-    'test',
-    progress &&
-      progress?.playing === false &&
-      progress?.setting === false &&
-      '4'
-  );
 
   if (!players) return null;
 
@@ -107,6 +98,7 @@ const LeaderChart = ({ players }: { players: Player[] | null }) => {
   return (
     <>
       <Logos />
+      <ItemEffect />
       <div className={clsx('flex items-end')}>
         <AnimatePresence>
           {/* 4 */}

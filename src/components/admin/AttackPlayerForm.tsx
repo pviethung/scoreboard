@@ -1,8 +1,9 @@
+import { postPlayers } from '@/broadcast';
 import PlayersSelect from '@/components/admin/PlayersSelect';
 import { usePlayers, usePlayersActions } from '@/store/playersSlice';
 import { Player } from '@/types/Player';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast, Toast } from 'react-hot-toast';
 
 const AttackPlayerForm = ({
@@ -17,6 +18,7 @@ const AttackPlayerForm = ({
   onClose: () => void;
 }) => {
   const players = usePlayers();
+  const [submitted, setSubmitted] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const { setCurrentTurnStatus } = usePlayersActions();
   const desPlayers = players
@@ -27,6 +29,10 @@ const AttackPlayerForm = ({
         value: p,
       };
     });
+
+  useEffect(() => {
+    postPlayers(players);
+  }, [submitted]);
 
   return (
     <div>
@@ -56,6 +62,7 @@ const AttackPlayerForm = ({
             e.preventDefault();
             onClose();
             toast.dismiss(toastObj.id);
+            setSubmitted(false);
           }}
           className="w-full rounded-lg bg-red-500 px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4  dark:hover:bg-red-500 sm:w-auto"
         >
@@ -74,8 +81,10 @@ const AttackPlayerForm = ({
                         point: 0,
                       },
                       beStriked: null,
+                      beSwapped: null,
                     }
                   : {
+                      beSwapped: null,
                       beAttacked: null,
                       beStriked: {
                         by: srcPlayer,
@@ -85,6 +94,7 @@ const AttackPlayerForm = ({
               setCurrentTurnStatus(selectedPlayer.id, data);
             }
             toast.dismiss(toastObj.id);
+            setSubmitted(true);
           }}
           className="focus:ring-blue-300s w-full rounded-lg bg-green-500 px-5 py-2.5 text-center text-sm font-medium capitalize  text-white focus:outline-none focus:ring-4 dark:hover:bg-green-500 sm:w-auto"
         >

@@ -149,11 +149,30 @@ const createPlayersSlice: StateCreator<PlayersSlice, [], [], PlayersSlice> = (
     setCurrentTurnStatus: (playerId, status) => {
       set((state) => {
         const player = state.players.find((p) => p.id === playerId);
-
         state.players.forEach(p => {
-          if(p.answers[p.answers.length - 1]?.status?.beAttacked?.by.id === status?.beAttacked?.by.id) {
-            p.answers[p.answers.length - 1].status = undefined;
+          const latestAnswer = p.answers[p.answers.length - 1];
+          if(latestAnswer.status) {
+            if(latestAnswer.status.beAttacked && latestAnswer.status.beAttacked.by.id === status?.beAttacked?.by.id) {
+              latestAnswer.status.beAttacked = null;
+            }
+
+            if(latestAnswer.status.beStriked && latestAnswer.status.beStriked.by.id === status?.beStriked?.by.id) {
+              latestAnswer.status.beStriked = null;
+            }
+
+            if(latestAnswer.status.beSwapped && latestAnswer.status.beSwapped.with.id === status?.beSwapped?.with.id) {
+              latestAnswer.status.beSwapped = null;
+            }
+
           }
+
+
+          // if(p.answers[p.answers.length - 1]?.status?.beAttacked?.by.id === status?.beAttacked?.by.id) {
+          //   p.answers[p.answers.length - 1].status!.beAttacked = null;
+          // }
+          // if(p.answers[p.answers.length - 1]?.status?.beStriked?.by.id === status?.beStriked?.by.id) {
+          //   p.answers[p.answers.length - 1].status!.beStriked = null;
+          // }
         })
 
         if (player) {

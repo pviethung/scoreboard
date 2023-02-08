@@ -1,10 +1,11 @@
+import { postPlayers } from '@/broadcast';
 import ItemSelect from '@/components/admin/ItemsSelect';
 import PlayersSelect from '@/components/admin/PlayersSelect';
 import { usePlayers, usePlayersActions } from '@/store/playersSlice';
 import { Item } from '@/types/Item';
 import { Player } from '@/types/Player';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast, Toast } from 'react-hot-toast';
 
 const SwapItemForm = ({
@@ -17,6 +18,7 @@ const SwapItemForm = ({
   onClose: () => void;
 }) => {
   const players = usePlayers();
+  const [submitted, setSubmitted] = useState(false);
   const desPlayers = players
     .filter((p) => p.id !== srcPlayer.id)
     .map((p) => {
@@ -30,6 +32,11 @@ const SwapItemForm = ({
   const [desItem, setDesItem] = useState<Item | null>(null);
   const { swap } = usePlayersActions();
   const data = srcPlayer.itemsLeft.filter((i) => i.value !== 'swap');
+  const { setCurrentTurnStatus } = usePlayersActions();
+
+  useEffect(() => {
+    postPlayers(players);
+  }, [submitted]);
 
   if (data.length === 0) {
     return (
@@ -132,6 +139,16 @@ const SwapItemForm = ({
             e.preventDefault();
             if (srcItem?.label && desPlayer?.id && desItem?.label) {
               swap(srcPlayer.id, srcItem.label, desPlayer.id, desItem.label);
+              setCurrentTurnStatus(desPlayer.id, {
+                beSwapped: {
+                  desItem,
+                  srcItem: srcItem,
+                  with: srcPlayer,
+                },
+                beAttacked: null,
+                beStriked: null,
+              });
+              setSubmitted(true);
             }
 
             toast.dismiss(toastObj.id);

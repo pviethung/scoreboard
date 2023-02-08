@@ -12,6 +12,11 @@ export interface Answer {
         "beStriked": {
             by: Player,
             point: number
+        } | null,
+        "beSwapped": {
+            with: Player,
+            srcItem: Item,
+            desItem: Item
         } | null
     }
 }
