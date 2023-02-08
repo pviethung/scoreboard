@@ -104,6 +104,7 @@ const SwapItemForm = ({
             <ItemSelect
               isClearable={false}
               data={desPlayer.itemsLeft}
+              value={desItem}
               onChange={(newValue, action) => {
                 if (newValue) {
                   setDesItem(newValue);

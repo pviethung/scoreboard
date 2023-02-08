@@ -59,6 +59,7 @@ const ItemInUse = ({ player }: { player: Player }) => {
   const [itemInUse, setItemInUse] = useState<typeof eventData>(null);
 
   useEffect(() => {
+    debugger;
     if (eventData?.playerId === player.id) {
       setItemInUse({ ...eventData });
       return;
@@ -70,7 +71,7 @@ const ItemInUse = ({ player }: { player: Player }) => {
 
   return (
     <>
-      {itemInUse?.item && itemInUse?.playerId === player.id && (
+      {itemInUse?.item && (
         <div
           className={clsx(
             'absolute top-0 left-0 flex animate-bounce flex-col items-center justify-center space-y-2'
