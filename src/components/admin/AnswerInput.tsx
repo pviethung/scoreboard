@@ -250,9 +250,9 @@ const AnswerInput = ({
           <p className={clsx('line-clamp-1')}>
             {answer.status.beAttacked.by.name}
           </p>
-          <p className={clsx('line-clamp-1')}>
+          {/* <p className={clsx('line-clamp-1')}>
             -{answer.status.beAttacked.point} point
-          </p>
+          </p> */}
         </div>
       )}
 

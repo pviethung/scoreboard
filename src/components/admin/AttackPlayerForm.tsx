@@ -70,7 +70,8 @@ const AttackPlayerForm = ({
                   ? {
                       beAttacked: {
                         by: srcPlayer,
-                        point: 20,
+                        // point: 20,
+                        point: 0,
                       },
                       beStriked: null,
                     }
