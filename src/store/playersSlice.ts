@@ -149,6 +149,13 @@ const createPlayersSlice: StateCreator<PlayersSlice, [], [], PlayersSlice> = (
     setCurrentTurnStatus: (playerId, status) => {
       set((state) => {
         const player = state.players.find((p) => p.id === playerId);
+
+        state.players.forEach(p => {
+          if(p.answers[p.answers.length - 1]?.status?.beAttacked?.by.id === status?.beAttacked?.by.id) {
+            p.answers[p.answers.length - 1].status = undefined;
+          }
+        })
+
         if (player) {
           player.answers[player.answers.length - 1].status = status;
           const lostPoint = status?.beAttacked?.point || 0;
