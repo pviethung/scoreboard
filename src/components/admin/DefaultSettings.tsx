@@ -49,7 +49,7 @@ const DefaultSettings = () => {
             className="input-bordered input w-full max-w-xs"
           />
         </div> */}
-        <div className="form-control">
+        {/* <div className="form-control">
           <label className="label">
             <span className="label-text">NUMBER OF TEAMS</span>
           </label>
@@ -59,7 +59,7 @@ const DefaultSettings = () => {
             onChange={(e) => setAppNumOfTeam(+e.target.value)}
             className="input-bordered input w-full max-w-xs"
           />
-        </div>
+        </div> */}
         {/* <div className="form-control">
           <label className="label">
             <span className="label-text">TIME PER QUESTION</span>

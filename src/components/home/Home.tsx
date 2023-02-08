@@ -1,18 +1,20 @@
-import { useListenPlayers } from '@/broadcast';
+import { useListenAppProgress, useListenPlayers } from '@/broadcast';
 import Loading from '@/components/elements/Loading';
 import LeaderChart from '@/components/home/LeaderChart';
 
 const Home = () => {
   const players = useListenPlayers();
+  const progress = useListenAppProgress();
+  const appRestarted =
+    progress && progress.playing === false && progress.setting === true;
 
   return (
     <>
-      {!players ? (
+      {!players || appRestarted === true ? (
         <Loading />
       ) : (
         <>
           <LeaderChart players={players} />
-          {/* <Scoreboard players={players} /> */}
         </>
       )}
     </>

@@ -7,6 +7,5 @@ module.exports = {
   plugins: [
     require('daisyui'),
     require('@tailwindcss/line-clamp'),
-    require('tw-elements/dist/plugin'),
   ],
 };

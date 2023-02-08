@@ -1,4 +1,4 @@
-import { BroadCast, BroadCastTypes, BROASCAST_ID, UpdateItemInUse } from '@/types/BroadCast';
+import { BroadCast, BroadCastTypes, BROASCAST_ID, UpdateAppProgess, UpdateItemInUse } from '@/types/BroadCast';
 import { Item } from '@/types/Item';
 import { Player } from '@/types/Player';
 import { useEffect, useState } from 'react';
@@ -77,3 +77,73 @@ export const postUpdateItemInUse = (data: { playerId: string; item: Item | null 
     data,
   });
 };
+
+export const useListenAppStop = () => {
+  const [appStopped, setAppStopped] = useState<boolean>(false);
+
+  const broadcast = new BroadcastChannel(BROASCAST_ID);
+  useEffect(() => {
+    broadcast.onmessage = (e: MessageEvent<BroadCast>) => {
+      if (e.data.type === BroadCastTypes.STOP_APP) {
+        setAppStopped(true);
+      }
+    };
+    return () => broadcast.close();
+  }, [broadcast]);
+
+  return appStopped;
+};
+
+export const postAppStop = () => {
+  const broadcast = new BroadcastChannel(BROASCAST_ID);
+  broadcast.postMessage({
+    type: BroadCastTypes.STOP_APP,
+  });
+};
+
+export const useListenAppRestart = () => {
+  const [appRestarted, setAppRestarted] = useState<boolean>(false);
+  const broadcast = new BroadcastChannel(BROASCAST_ID);
+
+  useEffect(() => {
+    broadcast.onmessage = (e: MessageEvent<BroadCast>) => {
+      if (e.data.type === BroadCastTypes.RESTAR_APP) {
+        setAppRestarted(true);
+      }
+    };
+    return () => broadcast.close();
+  }, [broadcast]);
+
+  return appRestarted;
+};
+
+export const postAppRestart = () => {
+  const broadcast = new BroadcastChannel(BROASCAST_ID);
+  broadcast.postMessage({
+    type: BroadCastTypes.RESTAR_APP,
+  });
+};
+
+export const useListenAppProgress = () => {
+  const [data, setData] = useState<UpdateAppProgess['data'] | null>(null);
+  const broadcast = new BroadcastChannel(BROASCAST_ID);
+
+  useEffect(() => {
+    broadcast.onmessage = (e: MessageEvent<BroadCast>) => {
+      if (e.data.type === BroadCastTypes.APP_PROGRESS) {
+        setData(e.data.data);
+      }
+    };
+    return () => broadcast.close();
+  }, [broadcast]);
+
+  return data;
+};
+
+export const postProgress = (data: UpdateAppProgess['data']) => {
+  const broadcast = new BroadcastChannel(BROASCAST_ID);
+  broadcast.postMessage({
+    type: BroadCastTypes.APP_PROGRESS,
+    data
+  });
+}

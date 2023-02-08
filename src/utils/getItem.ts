@@ -83,8 +83,8 @@ export const items: Item[] = [
   {
     avatar: 'https://cdn-icons-png.flaticon.com/512/9194/9194865.png',
     desc: 'Bạn có thể mời một bạn khán giả bất kỳ tham gia đội mình để trả lời câu hỏi này',
-    label: 'Avatar',
-    value: 'avatar',
+    label: 'Rescue',
+    value: 'rescue',
     // calculateFn: (beforeCal: number) => {
     //   return beforeCal;
     // },
@@ -126,7 +126,7 @@ const calcFns = {
   'double_bet': (beforeCal: number) => {
     return beforeCal;
   },
-  'avatar': (beforeCal: number) => {
+  'rescue': (beforeCal: number) => {
     return beforeCal
   },
   'swap': (beforeCal: number) => {

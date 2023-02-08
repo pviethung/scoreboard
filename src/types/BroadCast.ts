@@ -11,6 +11,8 @@ export enum BroadCastTypes {
   'REMOVE_PLAYER',
   'STOP_APP',
   'START_APP',
+  'RESTAR_APP',
+  'APP_PROGRESS'
 }
 
 interface GetPlayersEvent {
@@ -36,6 +38,9 @@ interface StopAppEvent {
 interface StartAppEvent {
   type: BroadCastTypes.START_APP;
 }
+interface RestartAppEvent {
+  type: BroadCastTypes.RESTAR_APP;
+}
 
 export interface UpdateItemInUse {
   type: BroadCastTypes.UPDATE_ITEM_IN_USE;
@@ -45,6 +50,14 @@ export interface UpdateItemInUse {
   };
 }
 
+export interface UpdateAppProgess {
+  type: BroadCastTypes.APP_PROGRESS,
+  data: {
+    playing: boolean,
+    setting: boolean,
+  }
+}
+
 export type BroadCast =
   | GetPlayersEvent
   | AddPlayerEvent
@@ -52,4 +65,6 @@ export type BroadCast =
   | RemovePlayerEvent
   | StopAppEvent
   | StartAppEvent
-  | UpdateItemInUse;
+  | UpdateItemInUse
+  | RestartAppEvent
+  | UpdateAppProgess

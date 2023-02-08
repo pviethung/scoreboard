@@ -160,7 +160,13 @@ const AnswerInput = ({
           className={clsx('h-8 w-full rounded-tl-md rounded-tr-md text-center')}
           type="number"
           min={10}
-          max={doubleBet ? (player?.point || 0) * 2 : player?.point || 0}
+          max={
+            doubleBet
+              ? (player?.point || 0) * 2 < 100
+                ? (player?.point || 0) * 2
+                : 100
+              : player?.point || 0
+          }
           step={10}
           value={bettedPoint}
           onChange={(e) => setBettedPoint(+e.target.value)}
@@ -169,7 +175,7 @@ const AnswerInput = ({
         <div className={clsx('btn-group w-full', '[&>button]:flex-1')}>
           <button
             className={clsx(
-              'btn-error btn-sm btn !rounded-tl-none rounded-br-none text-3xl ',
+              'btn btn-error btn-sm !rounded-tl-none rounded-br-none text-3xl ',
               {
                 'btn-disabled': answered || disabled,
               }
@@ -189,7 +195,7 @@ const AnswerInput = ({
           </button>
           <button
             className={clsx(
-              'btn-primary btn-sm btn rounded-tr-none rounded-br-none text-3xl ',
+              'btn btn-primary btn-sm rounded-tr-none rounded-br-none text-3xl ',
               {
                 'btn-disabled': !answered || disabled,
               }
@@ -213,7 +219,7 @@ const AnswerInput = ({
           </button>
           <button
             className={clsx(
-              'btn-success btn-sm btn rounded-tl-none rounded-bl-none !rounded-tr-none text-3xl',
+              'btn btn-success btn-sm rounded-tl-none rounded-bl-none !rounded-tr-none text-3xl',
               {
                 'btn-disabled': answered || disabled,
               }
