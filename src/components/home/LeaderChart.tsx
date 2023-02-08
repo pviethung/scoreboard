@@ -2,6 +2,7 @@ import crown from '@/assets/crown.png';
 import { useListenAppProgress, useListenUpdateItemInUse } from '@/broadcast';
 import Avatar from '@/components/elements/Avatar';
 import Confetti from '@/components/elements/Confetti';
+import Logos from '@/components/elements/Logos';
 import PlayerRank from '@/components/elements/PlayerRank';
 import { Player } from '@/types/Player';
 import clsx from 'clsx';
@@ -60,8 +61,12 @@ const ItemInUse = ({ player }: { player: Player }) => {
   useEffect(() => {
     if (eventData?.playerId === player.id) {
       setItemInUse({ ...eventData });
+      return;
     }
-  }, [eventData?.playerId]);
+    if (eventData?.playerId === 'all') {
+      setItemInUse(null);
+    }
+  }, [eventData]);
 
   return (
     <>
@@ -100,7 +105,8 @@ const LeaderChart = ({ players }: { players: Player[] | null }) => {
 
   return (
     <>
-      <div className={clsx('py-28', 'flex items-end')}>
+      <Logos />
+      <div className={clsx('flex items-end')}>
         <AnimatePresence>
           {/* 4 */}
           <motion.div layout key={player4.id} className={clsx('w-40')}>

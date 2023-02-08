@@ -1,4 +1,9 @@
-import { postAppRestart, postPlayers, postProgress } from '@/broadcast';
+import {
+  postAppRestart,
+  postPlayers,
+  postProgress,
+  postUpdateItemInUse,
+} from '@/broadcast';
 import { useConfigActions, useConfigData } from '@/store/configSlice';
 import { usePlayersActions } from '@/store/playersSlice';
 import clsx from 'clsx';
@@ -22,6 +27,10 @@ const GameActions = () => {
       postProgress({
         playing: false,
         setting: false,
+      });
+      postUpdateItemInUse({
+        item: null,
+        playerId: 'all',
       });
     } else {
       const players = reorderPlayers();

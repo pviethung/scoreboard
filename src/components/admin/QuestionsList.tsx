@@ -1,4 +1,4 @@
-import { postPlayers } from '@/broadcast';
+import { postPlayers, postUpdateItemInUse } from '@/broadcast';
 import { useConfigActions, useConfigData } from '@/store/configSlice';
 import { usePlayersActions } from '@/store/playersSlice';
 import clsx from 'clsx';
@@ -42,6 +42,10 @@ const QuestionsList = () => {
 
               // start new quest
               addQuest();
+              postUpdateItemInUse({
+                item: null,
+                playerId: 'all',
+              });
             }}
             className={clsx('btn-primary btn rounded-md uppercase')}
           >
