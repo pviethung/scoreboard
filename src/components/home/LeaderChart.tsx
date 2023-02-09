@@ -5,6 +5,7 @@ import Confetti from '@/components/elements/Confetti';
 import Logos from '@/components/elements/Logos';
 import PlayerRank from '@/components/elements/PlayerRank';
 import ItemEffect from '@/components/home/ItemEffect';
+import ItemsDesc from '@/components/home/ItemsDesc';
 import { UpdateAppProgess } from '@/types/BroadCast';
 import { Player } from '@/types/Player';
 import clsx from 'clsx';
@@ -53,7 +54,7 @@ const ExtraInfo = ({ player }: { player: Player }) => {
             answers:{' '}
           </p>
           <div className={clsx('mt-2 flex gap-3 text-3xl')}>
-            {player.answers.slice(0, -1).map((a, idx) => {
+            {player.answers.slice(-5, -1).map((a, idx) => {
               return a.earnedPoint > 0 ? (
                 <span key={idx} className={clsx('text-green-500')}>
                   <svg
@@ -447,6 +448,8 @@ const LeaderChart = ({
           </motion.div>
         </AnimatePresence>
       </div>
+
+      <ItemsDesc />
       {gameEnded && <Confetti />}
     </>
   );
