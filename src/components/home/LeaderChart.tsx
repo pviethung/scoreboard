@@ -146,9 +146,18 @@ const LeaderChart = ({
         <AnimatePresence>
           {/* 4 */}
           <motion.div layout key={player4.id} className={clsx('w-48')}>
-            <div className={clsx('mb-2 text-center')}>
-              <PlayerRank hideRank={true} player={player4} />
-            </div>
+            {currentQuest > 1 && ranks[3].rank === 1 ? (
+              <img
+                className={clsx('mx-auto mb-2 h-8 w-8')}
+                src={crown}
+                alt=""
+              />
+            ) : (
+              <div className={clsx('mb-2 text-center')}>
+                <PlayerRank hideRank={true} player={player4} />
+              </div>
+            )}
+
             <div
               className={clsx(
                 'relative mx-auto rounded-full border-4 border-yellow-500',
@@ -199,9 +208,17 @@ const LeaderChart = ({
           </motion.div>
           {/* 2 */}
           <motion.div layout key={player2.id} className={clsx('w-48')}>
-            <div className={clsx('mb-2 text-center')}>
-              <PlayerRank hideRank={true} player={player2} />
-            </div>
+            {currentQuest > 1 && ranks[1].rank === 1 ? (
+              <img
+                className={clsx('mx-auto mb-2 h-8 w-8')}
+                src={crown}
+                alt=""
+              />
+            ) : (
+              <div className={clsx('mb-2 text-center')}>
+                <PlayerRank hideRank={true} player={player2} />
+              </div>
+            )}
             <div
               className={clsx(
                 'relative mx-auto rounded-full border-4 border-secondary',
@@ -251,7 +268,17 @@ const LeaderChart = ({
           </motion.div>
           {/* 1 */}
           <motion.div layout key={player1.id} className={clsx('w-48')}>
-            <img className={clsx('mx-auto mb-2 h-8 w-8')} src={crown} alt="" />
+            {currentQuest > 1 && ranks[0].rank === 1 ? (
+              <img
+                className={clsx('mx-auto mb-2 h-8 w-8')}
+                src={crown}
+                alt=""
+              />
+            ) : (
+              <div className={clsx('mb-2 text-center')}>
+                <PlayerRank hideRank={true} player={player1} />
+              </div>
+            )}
             <div
               className={clsx(
                 'relative mx-auto rounded-full border-4 border-primary',
@@ -300,10 +327,17 @@ const LeaderChart = ({
           </motion.div>
           {/* 3 */}
           <motion.div layout key={player3.id} className={clsx('w-48')}>
-            <div className={clsx('mb-2 text-center')}>
-              <PlayerRank hideRank={true} player={player3} />
-            </div>
-
+            {currentQuest > 1 && ranks[2].rank === 1 ? (
+              <img
+                className={clsx('mx-auto mb-2 h-8 w-8')}
+                src={crown}
+                alt=""
+              />
+            ) : (
+              <div className={clsx('mb-2 text-center')}>
+                <PlayerRank hideRank={true} player={player3} />
+              </div>
+            )}
             <div
               className={clsx(
                 'relative mx-auto rounded-full border-4 border-accent',
@@ -353,10 +387,17 @@ const LeaderChart = ({
           </motion.div>
           {/* 5 */}
           <motion.div layout key={player5.id} className={clsx('w-48')}>
-            <div className={clsx('mb-2 text-center')}>
-              <PlayerRank hideRank={true} player={player5} />
-            </div>
-
+            {currentQuest > 1 && ranks[4].rank === 1 ? (
+              <img
+                className={clsx('mx-auto mb-2 h-8 w-8')}
+                src={crown}
+                alt=""
+              />
+            ) : (
+              <div className={clsx('mb-2 text-center')}>
+                <PlayerRank hideRank={true} player={player5} />
+              </div>
+            )}
             <div
               className={clsx(
                 'relative mx-auto rounded-full border-4 border-pink-500',

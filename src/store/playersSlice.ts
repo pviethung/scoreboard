@@ -64,6 +64,8 @@ const createPlayersSlice: StateCreator<PlayersSlice, [], [], PlayersSlice> = (
       }),
     reorderPlayers: () => {
       set((state) => {
+        let idxCount = 0;
+
         state.players
           .sort((p1, p2) => {
             if (p2.point === p1.point) {
@@ -71,9 +73,19 @@ const createPlayersSlice: StateCreator<PlayersSlice, [], [], PlayersSlice> = (
             }
             return p2.point - p1.point;
           })
-          .forEach((player, idx) => {
+          .forEach((player, idx, players) => {
             player.prevRank = player.rank;
-            player.rank = idx + 1;
+            if (idx === 0) {
+            player.rank = 1;
+              idxCount++;
+              return;
+            }
+            if (player.point === players[idx - 1].point) {
+              player.rank = idxCount
+            } else {
+              player.rank = idxCount + 1
+              idxCount++;
+            }
           });
         return state;
       });
