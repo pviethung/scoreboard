@@ -1,10 +1,11 @@
 import crown from '@/assets/crown.png';
-import { useListenAppProgress, useListenUpdateItemInUse } from '@/broadcast';
+import { useListenUpdateItemInUse } from '@/broadcast';
 import Avatar from '@/components/elements/Avatar';
 import Confetti from '@/components/elements/Confetti';
 import Logos from '@/components/elements/Logos';
 import PlayerRank from '@/components/elements/PlayerRank';
 import ItemEffect from '@/components/home/ItemEffect';
+import { UpdateAppProgess } from '@/types/BroadCast';
 import { Player } from '@/types/Player';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -84,8 +85,15 @@ const ItemInUse = ({ player }: { player: Player }) => {
   );
 };
 
-const LeaderChart = ({ players }: { players: Player[] | null }) => {
-  const progress = useListenAppProgress();
+const LeaderChart = ({
+  players,
+  progress,
+}: {
+  players: Player[] | null;
+  progress: UpdateAppProgess['data'] | null;
+}) => {
+  const gameEnded = progress?.playing === false && progress?.setting === false;
+  const currentQuest = progress?.currentQuest || 0;
 
   if (!players) return null;
 
@@ -122,7 +130,11 @@ const LeaderChart = ({ players }: { players: Player[] | null }) => {
             <div className="mb-20" />
             <div
               className={clsx(
-                'relative flex h-44 flex-col items-center bg-yellow-500/80',
+                {
+                  'h-44': currentQuest > 1,
+                  'h-24': currentQuest <= 1,
+                },
+                'relative flex flex-col items-center bg-yellow-500/80',
                 'after:absolute after:-top-14 after:left-[10px] after:h-14 after:w-full after:-skew-x-[20deg] after:bg-yellow-500 after:content-[""]',
                 'before:absolute before:-right-5 before:-top-[30px] before:h-full before:w-5 before:-skew-y-[70deg] before:bg-yellow-500/80 before:content-[""]'
               )}
@@ -159,7 +171,11 @@ const LeaderChart = ({ players }: { players: Player[] | null }) => {
             <div className="mb-20" />
             <div
               className={clsx(
-                'relative flex h-60 flex-col items-center bg-secondary-focus',
+                {
+                  'h-60': currentQuest > 1,
+                  'h-24': currentQuest <= 1,
+                },
+                'relative flex flex-col items-center bg-secondary-focus',
                 'after:absolute after:-top-14 after:left-[10px] after:h-14 after:w-full after:-skew-x-[20deg] after:bg-secondary after:content-[""]',
                 'before:absolute before:-right-5 before:-top-[30px] before:h-full before:w-5 before:-skew-y-[70deg] before:bg-secondary before:content-[""]'
               )}
@@ -193,9 +209,13 @@ const LeaderChart = ({ players }: { players: Player[] | null }) => {
             <div className="mb-20" />
             <div
               className={clsx(
-                'relative z-10 flex h-72 flex-col items-center bg-primary-focus',
-                'after:absolute after:-top-[60px] after:h-0 after:w-full after:content-[""]',
-                'after:border-b-[60px] after:border-l-[20px] after:border-r-[20px] after:border-b-primary after:border-l-transparent after:border-r-transparent'
+                {
+                  'h-72': currentQuest > 1,
+                  'h-24': currentQuest <= 1,
+                },
+                'relative z-10 flex flex-col items-center bg-primary-focus',
+                'after:absolute after:-top-[56px] after:h-0 after:w-full after:content-[""]',
+                'after:border-b-[56px] after:border-l-[20px] after:border-r-[20px] after:border-b-primary after:border-l-transparent after:border-r-transparent'
               )}
             >
               <span
@@ -231,8 +251,12 @@ const LeaderChart = ({ players }: { players: Player[] | null }) => {
             <div className="mb-20" />
             <div
               className={clsx(
-                'relative z-[9] flex h-52 w-40 flex-col items-center justify-around bg-accent-focus',
-                'after:absolute after:-top-14 after:right-[10px] after:h-14 after:w-full after:skew-x-[20deg] after:bg-accent after:content-[""]',
+                {
+                  'h-52': currentQuest > 1,
+                  'h-24': currentQuest <= 1,
+                },
+                'relative z-[9] flex w-40 flex-col items-center justify-around bg-accent-focus',
+                'after:absolute after:-top-14 after:right-[16px] after:h-14 after:w-full after:skew-x-[30deg] after:bg-accent after:content-[""]',
                 'before:absolute before:-left-5 before:-top-[30px] before:h-full before:w-5 before:skew-y-[70deg] before:bg-accent before:content-[""]'
               )}
             >
@@ -269,8 +293,12 @@ const LeaderChart = ({ players }: { players: Player[] | null }) => {
             <div className="mb-20" />
             <div
               className={clsx(
-                'relative flex h-36 w-40 flex-col items-center justify-around bg-pink-500/80',
-                'after:absolute after:-top-14 after:right-[10px] after:h-14 after:w-full after:skew-x-[20deg] after:bg-pink-500 after:content-[""]',
+                {
+                  'h-40': currentQuest > 1,
+                  'h-24': currentQuest <= 1,
+                },
+                'relative flex h-36 flex-col items-center justify-around bg-pink-500/80',
+                'after:absolute after:-top-14 after:right-[16px] after:h-14 after:w-full after:skew-x-[30deg] after:bg-pink-500 after:content-[""]',
                 'before:absolute before:-left-5 before:-top-[30px] before:h-full before:w-5 before:skew-y-[70deg] before:bg-pink-500/80 before:content-[""]'
               )}
             >
@@ -288,9 +316,7 @@ const LeaderChart = ({ players }: { players: Player[] | null }) => {
           </motion.div>
         </AnimatePresence>
       </div>
-      {progress &&
-        progress?.playing === false &&
-        progress?.setting === false && <Confetti />}
+      {gameEnded && <Confetti />}
     </>
   );
 };

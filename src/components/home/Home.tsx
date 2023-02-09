@@ -14,7 +14,7 @@ const Home = () => {
         <Loading />
       ) : (
         <>
-          <LeaderChart players={players} />
+          <LeaderChart progress={progress} players={players} />
         </>
       )}
     </>

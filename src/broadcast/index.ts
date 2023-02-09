@@ -1,7 +1,7 @@
 import { BroadCast, BroadCastTypes, BROASCAST_ID, UpdateAppProgess, UpdateItemInUse } from '@/types/BroadCast';
 import { Item } from '@/types/Item';
 import { Player } from '@/types/Player';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export const useListenPlayers = () => {
   const [players, setPlayers] = useState<Player[] | null>(null);
@@ -9,7 +9,6 @@ export const useListenPlayers = () => {
 
   useEffect(() => {
     broadcast.onmessage = (e: MessageEvent<BroadCast>) => {
-      console.log('broadcast listened');
       if (e.data.type === BroadCastTypes.GET_PLAYERS) {
         setPlayers(e.data.data);
       }
@@ -126,7 +125,7 @@ export const postAppRestart = () => {
 
 export const useListenAppProgress = () => {
   const [data, setData] = useState<UpdateAppProgess['data'] | null>(null);
-  const broadcast = new BroadcastChannel(BROASCAST_ID);
+  const broadcast = useMemo(() => new BroadcastChannel(BROASCAST_ID), []);
 
   useEffect(() => {
     broadcast.onmessage = (e: MessageEvent<BroadCast>) => {
@@ -135,7 +134,7 @@ export const useListenAppProgress = () => {
       }
     };
     return () => broadcast.close();
-  }, [broadcast]);
+  }, []);
 
   return data;
 };

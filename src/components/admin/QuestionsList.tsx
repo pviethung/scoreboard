@@ -1,14 +1,22 @@
-import { postPlayers, postUpdateItemInUse } from '@/broadcast';
+import { postPlayers, postProgress, postUpdateItemInUse } from '@/broadcast';
 import { useConfigActions, useConfigData } from '@/store/configSlice';
 import { usePlayersActions } from '@/store/playersSlice';
 import clsx from 'clsx';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 
 const QuestionsList = () => {
   const { numOfQuest, currentQuest, playing } = useConfigData();
   const { addQuest } = useConfigActions();
   const { reorderPlayers, newTurn, calculatePoints, checkRemainingItems } =
     usePlayersActions();
+
+  useEffect(() => {
+    postProgress({
+      currentQuest,
+      playing: true,
+      setting: false,
+    });
+  }, [currentQuest]);
 
   return (
     <tr>
@@ -42,6 +50,7 @@ const QuestionsList = () => {
 
               // start new quest
               addQuest();
+
               postUpdateItemInUse({
                 item: null,
                 playerId: 'all',

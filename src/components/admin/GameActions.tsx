@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import { memo, useState } from 'react';
 
 const GameActions = () => {
-  const { playing } = useConfigData();
+  const { playing, currentQuest } = useConfigData();
   const [touched, setTouched] = useState(false);
   const { reorderPlayers, resetData, calculatePoints } = usePlayersActions();
   const { restart, start, stop } = useConfigActions();
@@ -27,6 +27,7 @@ const GameActions = () => {
       postProgress({
         playing: false,
         setting: false,
+        currentQuest,
       });
       postUpdateItemInUse({
         item: null,
@@ -41,6 +42,7 @@ const GameActions = () => {
       postProgress({
         setting: false,
         playing: true,
+        currentQuest,
       });
     }
   };
@@ -52,6 +54,7 @@ const GameActions = () => {
     postProgress({
       playing: false,
       setting: true,
+      currentQuest,
     });
   };
 

@@ -55,6 +55,7 @@ export interface UpdateAppProgess {
   data: {
     playing: boolean,
     setting: boolean,
+    currentQuest: number
   }
 }
 
