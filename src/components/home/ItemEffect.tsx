@@ -116,7 +116,7 @@ const ItemEffect = () => {
     let timeOutId = setTimeout(() => {
       setContent('');
       setShow(false);
-    }, 10000);
+    }, 5000);
 
     return () => {
       clearTimeout(timeOutId);
