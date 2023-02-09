@@ -50,8 +50,11 @@ const ExtraInfo = ({ player }: { player: Player }) => {
       {player.answers.length > 1 && (
         <div>
           <p className="text-center">
-            Last {player.answers.length <= 5 ? player.answers.length - 1 : 5}{' '}
-            answers:{' '}
+            {player.answers.length === 2
+              ? 'Last answer'
+              : `Last ${
+                  player.answers.length <= 5 ? player.answers.length - 1 : 5
+                } answers: `}
           </p>
           <div className={clsx('mt-2 flex gap-3 text-3xl')}>
             {player.answers.slice(-6, -1).map((a, idx) => {
