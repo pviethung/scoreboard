@@ -9,7 +9,39 @@ import { UpdateAppProgess } from '@/types/BroadCast';
 import { Player } from '@/types/Player';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+const getRankHeights = (players: Player[]) => {
+  const heights = ['h-72', 'h-60', 'h-52', 'h-44', 'h-40'];
+  let idxCount = 0;
+  let rankHeights: { height: string; rank: number }[] = [];
+
+  players.forEach((p, idx, players) => {
+    if (idx === 0) {
+      rankHeights.push({
+        height: heights[0],
+        rank: 1,
+      });
+      idxCount++;
+      return;
+    }
+
+    if (p.point === players[idx - 1].point) {
+      rankHeights.push({
+        height: heights[idxCount - 1],
+        rank: idxCount,
+      });
+    } else {
+      rankHeights.push({
+        height: heights[idxCount],
+        rank: idxCount + 1,
+      });
+      idxCount++;
+    }
+  });
+
+  return rankHeights;
+};
 
 const ExtraInfo = ({ player }: { player: Player }) => {
   return (
@@ -94,6 +126,9 @@ const LeaderChart = ({
 }) => {
   const gameEnded = progress?.playing === false && progress?.setting === false;
   const currentQuest = progress?.currentQuest || 0;
+  const ranks = useMemo(() => getRankHeights(players || []), [players]);
+
+  console.log(ranks);
 
   if (!players) return null;
 
@@ -110,15 +145,26 @@ const LeaderChart = ({
       <div className={clsx('flex items-end')}>
         <AnimatePresence>
           {/* 4 */}
-          <motion.div layout key={player4.id} className={clsx('w-40')}>
+          <motion.div layout key={player4.id} className={clsx('w-48')}>
             <div className={clsx('mb-2 text-center')}>
               <PlayerRank hideRank={true} player={player4} />
             </div>
             <div
               className={clsx(
-                'relative mx-auto w-36 rounded-full border-4 border-yellow-500',
+                'relative mx-auto rounded-full border-4 border-yellow-500',
                 'text-lg font-bold',
-                'after:absolute after:-bottom-5 after:left-12 after:flex after:h-10 after:w-10 after:items-center after:justify-center after:rounded-full after:bg-yellow-500 after:content-["4th"]'
+                'after:absolute after:-bottom-5 after:left-1/2 after:flex after:h-10 after:w-10 after:-translate-x-1/2 after:items-center after:justify-center after:rounded-full after:bg-yellow-500',
+                {
+                  'w-40': ranks[3].rank === 1,
+                  'w-32': ranks[3].rank !== 1,
+                },
+                {
+                  'after:content-["5th"]': ranks[3].rank === 5,
+                  'after:content-["4th"]': ranks[3].rank === 4,
+                  'after:content-["3rd"]': ranks[3].rank === 3,
+                  'after:content-["2nd"]': ranks[3].rank === 2,
+                  'after:content-["1st"]': ranks[3].rank === 1,
+                }
               )}
             >
               <Avatar src={player4.avatar} />
@@ -131,7 +177,7 @@ const LeaderChart = ({
             <div
               className={clsx(
                 {
-                  'h-44': currentQuest > 1,
+                  [ranks[3].height]: currentQuest > 1,
                   'h-24': currentQuest <= 1,
                 },
                 'relative flex flex-col items-center bg-yellow-500/80',
@@ -152,14 +198,25 @@ const LeaderChart = ({
             </div>
           </motion.div>
           {/* 2 */}
-          <motion.div layout key={player2.id} className={clsx('w-40')}>
+          <motion.div layout key={player2.id} className={clsx('w-48')}>
             <div className={clsx('mb-2 text-center')}>
               <PlayerRank hideRank={true} player={player2} />
             </div>
             <div
               className={clsx(
-                'relative mx-auto w-36 rounded-full border-4 border-secondary',
-                'text-lg font-bold after:absolute after:-bottom-5 after:left-12 after:flex after:h-10 after:w-10 after:items-center after:justify-center after:rounded-full after:bg-secondary after:content-["2nd"]'
+                'relative mx-auto rounded-full border-4 border-secondary',
+                'text-lg font-bold after:absolute after:-bottom-5 after:left-1/2 after:flex after:h-10 after:w-10 after:-translate-x-1/2 after:items-center after:justify-center after:rounded-full after:bg-secondary',
+                {
+                  'w-40': ranks[1].rank === 1,
+                  'w-32': ranks[1].rank !== 1,
+                },
+                {
+                  'after:content-["5th"]': ranks[1].rank === 5,
+                  'after:content-["4th"]': ranks[1].rank === 4,
+                  'after:content-["3rd"]': ranks[1].rank === 3,
+                  'after:content-["2nd"]': ranks[1].rank === 2,
+                  'after:content-["1st"]': ranks[1].rank === 1,
+                }
               )}
             >
               <Avatar src={player2.avatar} />
@@ -172,7 +229,7 @@ const LeaderChart = ({
             <div
               className={clsx(
                 {
-                  'h-60': currentQuest > 1,
+                  [ranks[1].height]: currentQuest > 1,
                   'h-24': currentQuest <= 1,
                 },
                 'relative flex flex-col items-center bg-secondary-focus',
@@ -197,8 +254,19 @@ const LeaderChart = ({
             <img className={clsx('mx-auto mb-2 h-8 w-8')} src={crown} alt="" />
             <div
               className={clsx(
-                'relative mx-auto w-44 rounded-full border-4 border-primary',
-                'text-lg font-bold after:absolute after:-bottom-5 after:left-16 after:flex after:h-10 after:w-10 after:items-center after:justify-center after:rounded-full after:bg-primary after:content-["1st"]'
+                'relative mx-auto rounded-full border-4 border-primary',
+                'text-lg font-bold after:absolute after:-bottom-5 after:left-1/2 after:flex after:h-10 after:w-10 after:-translate-x-1/2 after:items-center after:justify-center after:rounded-full after:bg-primary',
+                {
+                  'w-40': ranks[0].rank === 1,
+                  'w-32': ranks[0].rank !== 1,
+                },
+                {
+                  'after:content-["5th"]': ranks[0].rank === 5,
+                  'after:content-["4th"]': ranks[0].rank === 4,
+                  'after:content-["3rd"]': ranks[0].rank === 3,
+                  'after:content-["2nd"]': ranks[0].rank === 2,
+                  'after:content-["1st"]': ranks[0].rank === 1,
+                }
               )}
             >
               <Avatar src={player1.avatar} />
@@ -210,7 +278,7 @@ const LeaderChart = ({
             <div
               className={clsx(
                 {
-                  'h-72': currentQuest > 1,
+                  [ranks[0].height]: currentQuest > 1,
                   'h-24': currentQuest <= 1,
                 },
                 'relative z-10 flex flex-col items-center bg-primary-focus',
@@ -231,15 +299,26 @@ const LeaderChart = ({
             </div>
           </motion.div>
           {/* 3 */}
-          <motion.div layout key={player3.id} className={clsx('w-40')}>
+          <motion.div layout key={player3.id} className={clsx('w-48')}>
             <div className={clsx('mb-2 text-center')}>
               <PlayerRank hideRank={true} player={player3} />
             </div>
 
             <div
               className={clsx(
-                'relative mx-auto w-36 rounded-full border-4 border-accent',
-                'text-lg font-bold after:absolute after:-bottom-5 after:left-12 after:flex after:h-10 after:w-10 after:items-center after:justify-center after:rounded-full after:bg-accent after:content-["3rd"]'
+                'relative mx-auto rounded-full border-4 border-accent',
+                'text-lg font-bold after:absolute after:-bottom-5 after:left-1/2 after:flex after:h-10 after:w-10 after:-translate-x-1/2 after:items-center after:justify-center after:rounded-full after:bg-accent',
+                {
+                  'w-40': ranks[2].rank === 1,
+                  'w-32': ranks[2].rank !== 1,
+                },
+                {
+                  'after:content-["5th"]': ranks[2].rank === 5,
+                  'after:content-["4th"]': ranks[2].rank === 4,
+                  'after:content-["3rd"]': ranks[2].rank === 3,
+                  'after:content-["2nd"]': ranks[2].rank === 2,
+                  'after:content-["1st"]': ranks[2].rank === 1,
+                }
               )}
             >
               <Avatar src={player3.avatar} />
@@ -252,10 +331,10 @@ const LeaderChart = ({
             <div
               className={clsx(
                 {
-                  'h-52': currentQuest > 1,
+                  [ranks[2].height]: currentQuest > 1,
                   'h-24': currentQuest <= 1,
                 },
-                'relative z-[9] flex w-40 flex-col items-center justify-around bg-accent-focus',
+                'relative z-[9] flex flex-col items-center justify-around bg-accent-focus',
                 'after:absolute after:-top-14 after:right-[16px] after:h-14 after:w-full after:skew-x-[30deg] after:bg-accent after:content-[""]',
                 'before:absolute before:-left-5 before:-top-[30px] before:h-full before:w-5 before:skew-y-[70deg] before:bg-accent before:content-[""]'
               )}
@@ -273,15 +352,26 @@ const LeaderChart = ({
             </div>
           </motion.div>
           {/* 5 */}
-          <motion.div layout key={player5.id} className={clsx('w-40')}>
+          <motion.div layout key={player5.id} className={clsx('w-48')}>
             <div className={clsx('mb-2 text-center')}>
               <PlayerRank hideRank={true} player={player5} />
             </div>
 
             <div
               className={clsx(
-                'relative mx-auto w-36 rounded-full border-4 border-pink-500',
-                'text-lg font-bold after:absolute after:-bottom-5 after:left-12 after:flex after:h-10 after:w-10 after:items-center after:justify-center after:rounded-full after:bg-pink-500 after:content-["5th"]'
+                'relative mx-auto rounded-full border-4 border-pink-500',
+                'text-lg font-bold after:absolute after:-bottom-5 after:left-1/2 after:flex after:h-10 after:w-10 after:-translate-x-1/2 after:items-center after:justify-center after:rounded-full after:bg-pink-500',
+                {
+                  'w-40': ranks[4].rank === 1,
+                  'w-32': ranks[4].rank !== 1,
+                },
+                {
+                  'after:content-["5th"]': ranks[4].rank === 5,
+                  'after:content-["4th"]': ranks[4].rank === 4,
+                  'after:content-["3rd"]': ranks[4].rank === 3,
+                  'after:content-["2nd"]': ranks[4].rank === 2,
+                  'after:content-["1st"]': ranks[4].rank === 1,
+                }
               )}
             >
               <Avatar src={player5.avatar} />
@@ -294,10 +384,10 @@ const LeaderChart = ({
             <div
               className={clsx(
                 {
-                  'h-40': currentQuest > 1,
+                  [ranks[4].height]: currentQuest > 1,
                   'h-24': currentQuest <= 1,
                 },
-                'relative flex h-36 flex-col items-center justify-around bg-pink-500/80',
+                'relative flex flex-col items-center justify-around bg-pink-500/80',
                 'after:absolute after:-top-14 after:right-[16px] after:h-14 after:w-full after:skew-x-[30deg] after:bg-pink-500 after:content-[""]',
                 'before:absolute before:-left-5 before:-top-[30px] before:h-full before:w-5 before:skew-y-[70deg] before:bg-pink-500/80 before:content-[""]'
               )}
