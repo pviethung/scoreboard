@@ -54,7 +54,7 @@ const ExtraInfo = ({ player }: { player: Player }) => {
             answers:{' '}
           </p>
           <div className={clsx('mt-2 flex gap-3 text-3xl')}>
-            {player.answers.slice(-5, -1).map((a, idx) => {
+            {player.answers.slice(-6, -1).map((a, idx) => {
               return a.earnedPoint > 0 ? (
                 <span key={idx} className={clsx('text-green-500')}>
                   <svg
