@@ -132,7 +132,7 @@ const LeaderChart = ({
   const currentQuest = progress?.currentQuest || 0;
   const ranks = useMemo(() => getRankHeights(players || []), [players]);
 
-  console.log(ranks);
+  console.log('ranks', ranks);
 
   if (!players) return null;
 

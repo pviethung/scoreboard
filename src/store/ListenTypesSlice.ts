@@ -10,7 +10,7 @@ interface ListenTypesSlice {
 }
 
 const initialState: Omit<ListenTypesSlice, 'actions'> = {
-  type: 'offline',
+  type: 'online',
 };
 
 const createListenSlice: StateCreator<

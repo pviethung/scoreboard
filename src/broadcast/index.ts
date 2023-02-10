@@ -25,7 +25,6 @@ export const useListenPlayers = (listenType?: ListenTypes) => {
   useEffect(() => {
     if (listenType && listenType === 'online') {
       socket.on(BroadCastTypes.GET_PLAYERS, (players) => {
-        console.log('data from soc')
         setPlayers(players);
       });
       return () => {
@@ -35,7 +34,6 @@ export const useListenPlayers = (listenType?: ListenTypes) => {
 
     broadcast.onmessage = (e: MessageEvent<BroadCast>) => {
       if (e.data.type === BroadCastTypes.GET_PLAYERS) {
-        console.log('data from broadcast')
         setPlayers(e.data.data);
       }
     };
@@ -48,7 +46,6 @@ export const postPlayers = (players: Player[]) => {
   const broadcast = new BroadcastChannel(BROASCAST_ID);
   const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
     io(SOCKET_URL);
-
 
   socket.emit(BroadCastTypes.GET_PLAYERS, players);
   broadcast.postMessage({
@@ -82,20 +79,33 @@ export const postPlayer = (player: Player) => {
   });
 };
 
-export const useListenUpdateItemInUse = () => {
+export const useListenUpdateItemInUse = (listenType?: ListenTypes) => {
   const [updateData, setUpdateData] = useState<UpdateItemInUse['data'] | null>(
     null
   );
+  const broadcast = useMemo(() => new BroadcastChannel(BROASCAST_ID), []);
+  const socket: Socket<ServerToClientEvents, ClientToServerEvents> = useMemo(
+    () => io(SOCKET_URL),
+    [listenType]
+  );
 
-  const broadcast = new BroadcastChannel(BROASCAST_ID);
   useEffect(() => {
+    if (listenType && listenType === 'online') {
+      socket.on(BroadCastTypes.UPDATE_ITEM_IN_USE, (data) => {
+        setUpdateData(data);
+      });
+      return () => {
+        socket.close();
+      };
+    }
+
     broadcast.onmessage = (e: MessageEvent<BroadCast>) => {
       if (e.data.type === BroadCastTypes.UPDATE_ITEM_IN_USE) {
         setUpdateData(e.data.data);
       }
     };
     return () => broadcast.close();
-  }, [broadcast]);
+  }, [listenType]);
 
   return updateData;
 };
@@ -104,6 +114,10 @@ export const postUpdateItemInUse = (data: {
   item: Item | null;
 }) => {
   const broadcast = new BroadcastChannel(BROASCAST_ID);
+  const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
+    io(SOCKET_URL);
+
+  socket.emit(BroadCastTypes.UPDATE_ITEM_IN_USE, data);
   broadcast.postMessage({
     type: BroadCastTypes.UPDATE_ITEM_IN_USE,
     data,
@@ -157,7 +171,6 @@ export const postAppRestart = () => {
   });
 };
 
-//
 export const useListenAppProgress = (listenType?: ListenTypes) => {
   const [data, setData] = useState<UpdateAppProgess['data'] | null>(null);
   const broadcast = useMemo(() => new BroadcastChannel(BROASCAST_ID), []);
@@ -175,24 +188,23 @@ export const useListenAppProgress = (listenType?: ListenTypes) => {
         socket.close();
       };
     }
+
     broadcast.onmessage = (e: MessageEvent<BroadCast>) => {
       if (e.data.type === BroadCastTypes.APP_PROGRESS) {
         setData(e.data.data);
       }
-      return () => broadcast.close();
     };
+    return () => broadcast.close();
   }, [listenType]);
 
   return data;
 };
-export const postProgress = (
-  data: UpdateAppProgess['data'],
-  
-) => {
+export const postProgress = (data: UpdateAppProgess['data']) => {
   const broadcast = new BroadcastChannel(BROASCAST_ID);
-  const socket = io(SOCKET_URL);
+  const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
+    io(SOCKET_URL);
 
-  socket.emit(BroadCastTypes.ADD_PLAYER, data);
+  socket.emit(BroadCastTypes.APP_PROGRESS, data);
   broadcast.postMessage({
     type: BroadCastTypes.APP_PROGRESS,
     data,

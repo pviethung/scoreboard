@@ -76,10 +76,12 @@ export type BroadCast =
 export interface ServerToClientEvents {
   [BroadCastTypes.GET_PLAYERS]: (data: GetPlayersEvent['data']) => void;
   [BroadCastTypes.APP_PROGRESS]: (data: UpdateAppProgess['data']) => void;
+  [BroadCastTypes.UPDATE_ITEM_IN_USE]: (data: UpdateItemInUse['data']) => void;
 }
 export interface ClientToServerEvents {
   [BroadCastTypes.GET_PLAYERS]: (data: GetPlayersEvent['data']) => void;
   [BroadCastTypes.APP_PROGRESS]: (data: UpdateAppProgess['data']) => void;
+  [BroadCastTypes.UPDATE_ITEM_IN_USE]: (data: UpdateItemInUse['data']) => void;
 }
 export interface InterServerEvents {
   ping: () => void;

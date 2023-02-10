@@ -1,6 +1,5 @@
 import { useListenAppProgress } from '@/broadcast';
 import Guard from '@/components/elements/Guard';
-import SelectListenType from '@/components/elements/SelectListenType';
 import Home from '@/components/home/Home';
 import TestSocket from '@/components/TestSocket';
 import clsx from 'clsx';
@@ -29,7 +28,6 @@ const App = () => {
   return (
     <>
       <TestSocket />
-      <SelectListenType />
       {path !== '/admin' && !hideRedirectBtn && (
         <div className={clsx('relative z-10 p-4')}>
           <button
@@ -49,7 +47,8 @@ const App = () => {
           'flex flex-col items-center justify-center py-10'
         )}
       >
-        {path === '/' && <Home />}
+        {path === '/' && <Home isAdmin={false} />}
+        {path === '/leaderboard' && <Home isAdmin={true} />}
 
         {path === '/admin' && (
           <Guard>
