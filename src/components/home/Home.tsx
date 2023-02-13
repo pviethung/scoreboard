@@ -1,21 +1,31 @@
-import { useListenAppProgress, useListenPlayers } from '@/broadcast';
+import { postNewConnection } from '@/broadcast';
 import Loading from '@/components/elements/Loading';
 import LeaderChart from '@/components/home/LeaderChart';
-import { useListenType, useListenTypesActions } from '@/store/ListenTypesSlice';
+import { useListenTypesActions } from '@/store/ListenTypesSlice';
+import { UpdateAppProgess, UpdateItemInUse } from '@/types/BroadCast';
+import { ListenTypes } from '@/types/ListenTypes';
+import { Player } from '@/types/Player';
 import { useEffect } from 'react';
 
-const Home = ({ isAdmin }: { isAdmin: boolean }) => {
-  const listenType = useListenType();
-  const players = useListenPlayers(listenType);
-  const progress = useListenAppProgress(listenType);
+const Home = ({
+  isAdmin,
+  listenType,
+  players,
+  progress,
+  itemInUse,
+}: {
+  isAdmin: boolean;
+  players: Player[] | null;
+  listenType: ListenTypes;
+  progress: UpdateAppProgess['data'] | null;
+  itemInUse: UpdateItemInUse['data'] | null;
+}) => {
   const { setType } = useListenTypesActions();
-
-  console.log('progress', progress);
-  console.log('listenType', listenType);
-
   useEffect(() => {
     if (isAdmin) {
       setType('offline');
+    } else {
+      postNewConnection();
     }
   }, []);
 
@@ -28,7 +38,11 @@ const Home = ({ isAdmin }: { isAdmin: boolean }) => {
         <Loading />
       ) : (
         <>
-          <LeaderChart progress={progress} players={players} />
+          <LeaderChart
+            itemInUse={itemInUse}
+            progress={progress}
+            players={players}
+          />
         </>
       )}
     </>

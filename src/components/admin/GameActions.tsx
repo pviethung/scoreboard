@@ -1,9 +1,4 @@
-import {
-  postAppRestart,
-  postPlayers,
-  postProgress,
-  postUpdateItemInUse,
-} from '@/broadcast';
+import { postPlayers, postProgress, postUpdateItemInUse } from '@/broadcast';
 import { useConfigActions, useConfigData } from '@/store/configSlice';
 import { usePlayersActions } from '@/store/playersSlice';
 import clsx from 'clsx';
@@ -23,7 +18,7 @@ const GameActions = () => {
       postPlayers(players);
       setTouched(true);
       stop();
-      // postAppStop();
+
       postProgress({
         playing: false,
         setting: false,
@@ -50,7 +45,11 @@ const GameActions = () => {
     resetData();
     restart();
 
-    postAppRestart();
+    postPlayers([]);
+    postUpdateItemInUse({
+      playerId: 'all',
+      item: null,
+    });
     postProgress({
       playing: false,
       setting: true,

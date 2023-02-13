@@ -1,3 +1,8 @@
+import {
+  useListenAppProgress,
+  useListenNewConnection,
+  useListenUpdateItemInUse,
+} from '@/broadcast';
 import GameActions from '@/components/admin/GameActions';
 import PlayersListItem from '@/components/admin/PlayersListItem';
 import QuestionsList from '@/components/admin/QuestionsList';
@@ -6,22 +11,35 @@ import { usePlayers } from '@/store/playersSlice';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
-/*
-- question done
-- lose player
-- sort
-- visiter
-- persist
-- burn
-- loading screen
-- "start game" before "new turn"
-*/
 
 const PlayersList = () => {
   const players = usePlayers();
   const playersLeft = players.filter((p) => p.point !== 0).length;
   const { currentQuest } = useConfigData();
   const scrollParent = useRef<HTMLDivElement | null>(null);
+  const progress = useListenAppProgress();
+  const itemInUse = useListenUpdateItemInUse();
+  useListenNewConnection(players, progress, itemInUse);
+
+  // const socket: Socket<ServerToClientEvents, ClientToServerEvents> = useMemo(
+  //   () => io(SOCKET_URL),
+  //   [players, progress]
+  // );
+
+  // useEffect(() => {
+  //   socket.on(BroadCastTypes.NEW_CONNECTION, () => {
+  //     socket.emit(BroadCastTypes.GET_DATA_FOR_NEW_CONNECTION, {
+  //       players,
+  //       progress,
+  //     });
+  //   });
+  //   return () => {
+  //     socket.close();
+  //   };
+  // }, [players, progress]);
+
+  console.log('players', players);
+  console.log('progress', progress);
 
   useEffect(() => {
     if (scrollParent.current) {

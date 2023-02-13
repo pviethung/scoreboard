@@ -6,7 +6,6 @@ import AddPlayer from './AddPlayer';
 
 const Admin = () => {
   const { appInitialized } = useConfigData();
-
   return (
     <div className="max-w-full">
       <h1 className={clsx(' text-center text-4xl uppercase')}>admin</h1>

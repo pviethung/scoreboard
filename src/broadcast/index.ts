@@ -54,30 +54,6 @@ export const postPlayers = (players: Player[]) => {
   });
 };
 
-//TODOS delete
-export const useListenAddPlayer = () => {
-  const [addedPlayer, setAddedPlayer] = useState<Player | null>(null);
-  const broadcast = new BroadcastChannel(BROASCAST_ID);
-
-  useEffect(() => {
-    broadcast.onmessage = (e: MessageEvent<BroadCast>) => {
-      if (e.data.type === BroadCastTypes.ADD_PLAYER) {
-        setAddedPlayer(e.data.data);
-      }
-    };
-    return () => broadcast.close();
-  }, [broadcast]);
-
-  return addedPlayer;
-};
-//TODOS delete
-export const postPlayer = (player: Player) => {
-  const broadcast = new BroadcastChannel(BROASCAST_ID);
-  broadcast.postMessage({
-    type: BroadCastTypes.ADD_PLAYER,
-    data: player,
-  });
-};
 
 export const useListenUpdateItemInUse = (listenType?: ListenTypes) => {
   const [updateData, setUpdateData] = useState<UpdateItemInUse['data'] | null>(
@@ -124,53 +100,6 @@ export const postUpdateItemInUse = (data: {
   });
 };
 
-//TODOS delete
-export const useListenAppStop = () => {
-  const [appStopped, setAppStopped] = useState<boolean>(false);
-
-  const broadcast = new BroadcastChannel(BROASCAST_ID);
-  useEffect(() => {
-    broadcast.onmessage = (e: MessageEvent<BroadCast>) => {
-      if (e.data.type === BroadCastTypes.STOP_APP) {
-        setAppStopped(true);
-      }
-    };
-    return () => broadcast.close();
-  }, [broadcast]);
-
-  return appStopped;
-};
-//TODOS delete
-export const postAppStop = () => {
-  const broadcast = new BroadcastChannel(BROASCAST_ID);
-  broadcast.postMessage({
-    type: BroadCastTypes.STOP_APP,
-  });
-};
-//TODOS delete
-export const useListenAppRestart = () => {
-  const [appRestarted, setAppRestarted] = useState<boolean>(false);
-  const broadcast = new BroadcastChannel(BROASCAST_ID);
-
-  useEffect(() => {
-    broadcast.onmessage = (e: MessageEvent<BroadCast>) => {
-      if (e.data.type === BroadCastTypes.RESTAR_APP) {
-        setAppRestarted(true);
-      }
-    };
-    return () => broadcast.close();
-  }, [broadcast]);
-
-  return appRestarted;
-};
-//TODOS delete
-export const postAppRestart = () => {
-  const broadcast = new BroadcastChannel(BROASCAST_ID);
-  broadcast.postMessage({
-    type: BroadCastTypes.RESTAR_APP,
-  });
-};
-
 export const useListenAppProgress = (listenType?: ListenTypes) => {
   const [data, setData] = useState<UpdateAppProgess['data'] | null>(null);
   const broadcast = useMemo(() => new BroadcastChannel(BROASCAST_ID), []);
@@ -209,4 +138,33 @@ export const postProgress = (data: UpdateAppProgess['data']) => {
     type: BroadCastTypes.APP_PROGRESS,
     data,
   });
+};
+
+export const useListenNewConnection = (
+  players: Player[],
+  progress: UpdateAppProgess['data'] | null,
+  itemInUse: UpdateItemInUse['data'] | null
+) => {
+  const socket: Socket<ServerToClientEvents, ClientToServerEvents> = useMemo(
+    () => io(SOCKET_URL),
+    [players, progress]
+  );
+
+  useEffect(() => {
+    socket.on(BroadCastTypes.NEW_CONNECTION, () => {
+      socket.emit(BroadCastTypes.GET_DATA_FOR_NEW_CONNECTION, {
+        players,
+        progress,
+        itemInUse
+      });
+    });
+    return () => {
+      socket.close();
+    };
+  }, [players, progress]);
+};
+export const postNewConnection = () => {
+  const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
+    io(SOCKET_URL);
+  socket.emit(BroadCastTypes.NEW_CONNECTION);
 };

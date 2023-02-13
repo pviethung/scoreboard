@@ -1,16 +1,15 @@
 import crown from '@/assets/crown.png';
-import { useListenUpdateItemInUse } from '@/broadcast';
 import Avatar from '@/components/elements/Avatar';
 import Confetti from '@/components/elements/Confetti';
 import Logos from '@/components/elements/Logos';
 import PlayerRank from '@/components/elements/PlayerRank';
 import ItemEffect from '@/components/home/ItemEffect';
 import ItemsDesc from '@/components/home/ItemsDesc';
-import { UpdateAppProgess } from '@/types/BroadCast';
+import { UpdateAppProgess, UpdateItemInUse } from '@/types/BroadCast';
 import { Player } from '@/types/Player';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 const getRankHeights = (players: Player[]) => {
   const heights = ['h-72', 'h-60', 'h-52', 'h-44', 'h-40'];
@@ -44,20 +43,38 @@ const getRankHeights = (players: Player[]) => {
   return rankHeights;
 };
 
-const ExtraInfo = ({ player }: { player: Player }) => {
+const ExtraInfo = ({
+  player,
+  progress,
+}: {
+  player: Player;
+  progress: UpdateAppProgess['data'] | null;
+}) => {
+  const lastNQuest = progress?.playing
+    ? player.answers.slice(-6, -1)
+    : player.answers.slice(-5);
+
   return (
     <>
-      {player.answers.length > 1 && (
+      {(progress?.playing
+        ? player.answers.length > 1
+        : player.answers.length > 0) && (
         <div>
           <p className="text-center">
-            {player.answers.length === 2
+            {player.answers.length === (progress?.playing ? 2 : 1)
               ? 'Last answer'
               : `Last ${
-                  player.answers.length <= 5 ? player.answers.length - 1 : 5
+                  progress?.playing
+                    ? player.answers.length <= 5
+                      ? player.answers.length - 1
+                      : 5
+                    : player.answers.length <= 5
+                    ? player.answers.length
+                    : 5
                 } answers: `}
           </p>
           <div className={clsx('mt-2 flex gap-3 text-3xl')}>
-            {player.answers.slice(-6, -1).map((a, idx) => {
+            {lastNQuest.map((a, idx) => {
               return a.earnedPoint > 0 ? (
                 <span key={idx} className={clsx('text-green-500')}>
                   <svg
@@ -92,23 +109,18 @@ const ExtraInfo = ({ player }: { player: Player }) => {
     </>
   );
 };
-const ItemInUse = ({ player }: { player: Player }) => {
-  const eventData = useListenUpdateItemInUse();
-  const [itemInUse, setItemInUse] = useState<typeof eventData>(null);
-
-  useEffect(() => {
-    if (eventData?.playerId === player.id) {
-      setItemInUse({ ...eventData });
-      return;
-    }
-    if (eventData?.playerId === 'all') {
-      setItemInUse(null);
-    }
-  }, [eventData]);
+const ItemInUse = ({
+  player,
+  itemInUse,
+}: {
+  player: Player;
+  itemInUse: UpdateItemInUse['data'] | null;
+}) => {
+  console.log(itemInUse);
 
   return (
     <>
-      {itemInUse?.item && (
+      {itemInUse?.playerId === player.id && itemInUse?.item && (
         <div
           className={clsx(
             'absolute top-0 left-0 flex animate-bounce flex-col items-center justify-center space-y-2'
@@ -124,7 +136,9 @@ const ItemInUse = ({ player }: { player: Player }) => {
 const LeaderChart = ({
   players,
   progress,
+  itemInUse,
 }: {
+  itemInUse: UpdateItemInUse['data'] | null;
   players: Player[] | null;
   progress: UpdateAppProgess['data'] | null;
 }) => {
@@ -132,9 +146,7 @@ const LeaderChart = ({
   const currentQuest = progress?.currentQuest || 0;
   const ranks = useMemo(() => getRankHeights(players || []), [players]);
 
-  console.log('ranks', ranks);
-
-  if (!players) return null;
+  if (!players || players.length === 0) return null;
 
   let player1 = players[0];
   let player2 = players[1];
@@ -145,7 +157,7 @@ const LeaderChart = ({
   return (
     <>
       <Logos />
-      <ItemEffect />
+      <ItemEffect itemInUse={itemInUse} players={players} />
       <div className={clsx('flex items-end')}>
         <AnimatePresence>
           {/* 4 */}
@@ -181,7 +193,7 @@ const LeaderChart = ({
               )}
             >
               <Avatar src={player4.avatar} />
-              <ItemInUse player={player4} />
+              <ItemInUse itemInUse={itemInUse} player={player4} />
             </div>
             <div className="mt-6"></div>
             <p className="text-center line-clamp-2">{player4.name}</p>
@@ -206,7 +218,7 @@ const LeaderChart = ({
                 {player4.point}
               </span>
               <div className="mb-4">
-                <ExtraInfo player={player4} />
+                <ExtraInfo progress={progress} player={player4} />
               </div>
             </div>
           </motion.div>
@@ -241,7 +253,7 @@ const LeaderChart = ({
               )}
             >
               <Avatar src={player2.avatar} />
-              <ItemInUse player={player2} />
+              <ItemInUse itemInUse={itemInUse} player={player2} />
             </div>
             <div className="mt-6"></div>
             <p className="text-center line-clamp-2">{player2.name}</p>
@@ -266,7 +278,7 @@ const LeaderChart = ({
                 {player2.point}
               </span>
               <div className="mb-4">
-                <ExtraInfo player={player2} />
+                <ExtraInfo progress={progress} player={player2} />
               </div>
             </div>
           </motion.div>
@@ -301,7 +313,7 @@ const LeaderChart = ({
               )}
             >
               <Avatar src={player1.avatar} />
-              <ItemInUse player={player1} />
+              <ItemInUse itemInUse={itemInUse} player={player1} />
             </div>
             <div className="mb-6" />
             <p className="text-center line-clamp-2">{player1.name}</p>
@@ -325,7 +337,7 @@ const LeaderChart = ({
                 {player1.point}
               </span>
               <div className="mb-4">
-                <ExtraInfo player={player1} />
+                <ExtraInfo progress={progress} player={player1} />
               </div>
             </div>
           </motion.div>
@@ -360,7 +372,7 @@ const LeaderChart = ({
               )}
             >
               <Avatar src={player3.avatar} />
-              <ItemInUse player={player3} />
+              <ItemInUse itemInUse={itemInUse} player={player3} />
             </div>
             <div className="mt-6"></div>
             <p className="text-center line-clamp-2">{player3.name}</p>
@@ -385,7 +397,7 @@ const LeaderChart = ({
                 {player3.point}
               </span>
               <div className="mb-4">
-                <ExtraInfo player={player3} />
+                <ExtraInfo progress={progress} player={player3} />
               </div>
             </div>
           </motion.div>
@@ -420,7 +432,7 @@ const LeaderChart = ({
               )}
             >
               <Avatar src={player5.avatar} />
-              <ItemInUse player={player5} />
+              <ItemInUse itemInUse={itemInUse} player={player5} />
             </div>
             <div className="mt-6"></div>
             <p className="text-center line-clamp-2">{player5.name}</p>
@@ -445,7 +457,7 @@ const LeaderChart = ({
                 {player5.point}
               </span>
               <div className="mb-4">
-                <ExtraInfo player={player5} />
+                <ExtraInfo progress={progress} player={player5} />
               </div>
             </div>
           </motion.div>
