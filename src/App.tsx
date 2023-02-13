@@ -1,12 +1,26 @@
+import {
+  useListenAppProgress,
+  useListenPlayers,
+  useListenUpdateItemInUse,
+} from '@/broadcast';
 import Guard from '@/components/elements/Guard';
 import Home from '@/components/home/Home';
+import { useListenType } from '@/store/ListenTypesSlice';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Admin from './components/admin/Admin';
 
 const App = () => {
+  const listenType = useListenType();
+  const players = useListenPlayers(listenType);
+  const progress = useListenAppProgress(listenType);
+  const itemInUse = useListenUpdateItemInUse(listenType);
+
   const [path, setPath] = useState('');
+  const hideRedirectBtn =
+    (progress?.playing && progress.playing === true) ||
+    (progress?.currentQuest && progress.currentQuest > 0);
 
   useEffect(() => {
     setPath(window.location.pathname);
@@ -19,9 +33,12 @@ const App = () => {
     };
   }, []);
 
+  console.log('progress: ', progress);
+  console.log('itemInUse: ', itemInUse);
+
   return (
     <>
-      {path !== '/admin' && (
+      {path !== '/admin' && !hideRedirectBtn && (
         <div className={clsx('relative z-10 p-4')}>
           <button
             className={clsx('btn-primary btn')}
@@ -40,7 +57,24 @@ const App = () => {
           'flex flex-col items-center justify-center py-10'
         )}
       >
-        {path === '/' && <Home />}
+        {path === '/' && (
+          <Home
+            players={players}
+            listenType={listenType}
+            progress={progress}
+            isAdmin={false}
+            itemInUse={itemInUse}
+          />
+        )}
+        {path === '/leaderboard' && (
+          <Home
+            players={players}
+            listenType={listenType}
+            progress={progress}
+            isAdmin={true}
+            itemInUse={itemInUse}
+          />
+        )}
 
         {path === '/admin' && (
           <Guard>

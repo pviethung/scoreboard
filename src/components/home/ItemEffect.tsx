@@ -1,44 +1,60 @@
-import { useListenPlayers, useListenUpdateItemInUse } from '@/broadcast';
+import { UpdateItemInUse } from '@/types/BroadCast';
 import { Item } from '@/types/Item';
+import { Player } from '@/types/Player';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
-const ItemEffect = () => {
-  const data = useListenUpdateItemInUse();
-  const players = useListenPlayers();
+const ItemEffect = ({
+  itemInUse,
+  players,
+}: {
+  itemInUse: UpdateItemInUse['data'] | null;
+  players: Player[];
+}) => {
+  // const itemInUse = useListenUpdateItemInUse();
+  // const players = useListenPlayers();
   const [content, setContent] = useState<React.ReactNode>('');
   const [show, setShow] = useState(false);
 
+  console.log('effect item', itemInUse);
+  console.log('effect players', players);
+
   useEffect(() => {
-    if (!data || !data.item) return;
+    if (!itemInUse || !itemInUse.item) return;
     if (!players) return;
 
-    const srcPlayer = players.find((p) => p.id === data.playerId);
+    const srcPlayer = players.find((p) => p.id === itemInUse.playerId);
 
     if (
-      data.item.value !== 'attack' &&
-      data.item.value !== 'strike' &&
-      data.item.value !== 'swap'
+      itemInUse.item.value !== 'attack' &&
+      itemInUse.item.value !== 'strike' &&
+      itemInUse.item.value !== 'swap'
     ) {
       if (srcPlayer) {
         setShow(true);
         setContent(
           <div className={clsx('text-center')}>
-            <img className={clsx('w-56')} src={data.item.gif} alt="" />
+            <img className={clsx('w-56')} src={itemInUse.item.gif} alt="" />
             <p className={clsx('mt-4 text-lg')}>
               <span className={clsx('text-primary')}>{srcPlayer.name}</span>{' '}
               used{' '}
-              <span className={clsx('text-primary')}>{data.item.label}</span>
+              <span className={clsx('text-primary')}>
+                {itemInUse.item.label}
+              </span>
             </p>
           </div>
         );
       }
-    } else if (data.item.value === 'attack' || data.item.value === 'strike') {
-      const key = data.item.value === 'attack' ? 'beAttacked' : 'beStriked';
+    } else if (
+      itemInUse.item.value === 'attack' ||
+      itemInUse.item.value === 'strike'
+    ) {
+      const key =
+        itemInUse.item.value === 'attack' ? 'beAttacked' : 'beStriked';
       const playerAttack = srcPlayer;
       const playerBeAttacked = players.find((p) => {
         const status = p.answers[p.answers.length - 1].status;
-        if (status && status[key]?.by.id === data.playerId) {
+        if (status && status[key]?.by.id === itemInUse.playerId) {
           return true;
         }
       });
@@ -47,7 +63,7 @@ const ItemEffect = () => {
         setShow(true);
         setContent(
           <div className={clsx('text-center')}>
-            <img className={clsx('w-56')} src={data.item.gif} alt="" />
+            <img className={clsx('w-56')} src={itemInUse.item.gif} alt="" />
             <p className={clsx('mt-4 text-lg')}>
               <span className={clsx('text-primary')}>{playerAttack.name}</span>{' '}
               is {key == 'beAttacked' ? 'attacking' : 'striking'}{' '}
@@ -65,7 +81,7 @@ const ItemEffect = () => {
 
       const playerBeSwap = players.find((p) => {
         const status = p.answers[p.answers.length - 1].status;
-        if (status && status.beSwapped?.with.id === data.playerId) {
+        if (status && status.beSwapped?.with.id === itemInUse.playerId) {
           desItem = status.beSwapped.desItem;
           srcItem = status.beSwapped.srcItem;
           return true;
@@ -76,7 +92,7 @@ const ItemEffect = () => {
         setShow(true);
         setContent(
           <div className={clsx('text-center')}>
-            <img className={clsx('w-56')} src={data.item.gif} alt="" />
+            <img className={clsx('w-56')} src={itemInUse.item.gif} alt="" />
             <p className={clsx('mt-4 text-lg')}>
               <span className={clsx('text-primary')}>{playerSwap.name}</span> is
               swapped with{' '}
@@ -121,9 +137,9 @@ const ItemEffect = () => {
     return () => {
       clearTimeout(timeOutId);
     };
-  }, [data, players]);
+  }, [itemInUse, players]);
 
-  if (!data || !data.item || !players) {
+  if (!itemInUse || !itemInUse.item || !players) {
     return null;
   }
 

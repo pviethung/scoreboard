@@ -250,9 +250,23 @@ const AnswerInput = ({
           <p className={clsx('line-clamp-1')}>
             {answer.status.beAttacked.by.name}
           </p>
-          {/* <p className={clsx('line-clamp-1')}>
-            -{answer.status.beAttacked.point} point
-          </p> */}
+        </div>
+      )}
+      {disabled && answer.status?.beSwapped && (
+        <div
+          className={clsx(
+            'mt-4 w-32 whitespace-normal text-center text-primary'
+          )}
+        >
+          Be swapped with:
+          <p className={clsx('line-clamp-1')}>
+            {answer.status.beSwapped.with.name}
+          </p>
+          <p>
+            {answer.status.beSwapped.srcItem.label}
+            {' <-> '}
+            {answer.status.beSwapped.desItem.label}
+          </p>
         </div>
       )}
 

@@ -42,7 +42,10 @@ const ItemsDesc = () => {
         >
           {items.map((i) => {
             return (
-              <li className={clsx('flex items-center gap-4 px-4')}>
+              <li
+                key={i.value}
+                className={clsx('flex items-center gap-4 px-4')}
+              >
                 <img className={clsx('w-10')} src={i.avatar} alt="" />
                 <p>
                   <span className="text-primary">({i.label}):</span> {i.desc}

@@ -38,6 +38,7 @@ const DefaultSettings = () => {
             className="input-bordered input w-full max-w-xs"
           />
         </div>
+
         {/* <div className="form-control">
           <label className="label">
             <span className="label-text">NUMBER OF QUESTIONS</span>

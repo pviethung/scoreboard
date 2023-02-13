@@ -7,10 +7,6 @@ export const items: Item[] = [
     label: 'Plus',
     value: 'plus',
     gif: 'https://media1.giphy.com/media/5ns6077LTlGACuwRQR/giphy.gif?cid=ecf05e47obqjc5zsqgma3s802slbggohcgoaxqp3r4pnsws6&rid=giphy.gif',
-    // calculateFn: (beforeCal: number) => {
-    //   if (beforeCal < 0) return beforeCal;
-    //   return beforeCal + 10;
-    // },
   },
   {
     avatar: 'https://cdn-icons-png.flaticon.com/512/5622/5622845.png',
@@ -18,10 +14,6 @@ export const items: Item[] = [
     label: 'Extra',
     value: 'extra',
     gif: 'https://media2.giphy.com/media/idjtuAQ9jzNiFWNTQD/giphy.gif?cid=ecf05e47hacxt42nwnnk7yh4h94jf5wxa93f3jl8ky2rcg7n&rid=giphy.gif',
-    // calculateFn: (beforeCal: number) => {
-    //   if (beforeCal < 0) return beforeCal;
-    //   return beforeCal + 20;
-    // },
   },
   {
     avatar: 'https://cdn-icons-png.flaticon.com/512/9092/9092455.png',
@@ -29,10 +21,6 @@ export const items: Item[] = [
     label: 'Bonus',
     value: 'bonus',
     gif: 'https://media.tenor.com/hpQTzzifKzkAAAAC/bonusbaadshah.gif',
-    // calculateFn: (beforeCal: number) => {
-    //   if (beforeCal < 0) return beforeCal;
-    //   return beforeCal + 30;
-    // },
   },
   {
     avatar: 'https://cdn-icons-png.flaticon.com/512/1959/1959460.png',
@@ -40,10 +28,6 @@ export const items: Item[] = [
     label: 'Shield',
     value: 'shield',
     gif: 'https://gifdb.com/images/high/steve-rogers-captain-america-shield-back-avengers-s9s28d21ilhmmkhm.webp',
-    // calculateFn: (beforeCal: number) => {
-    //   if (beforeCal < 0) return 0;
-    //   return beforeCal;
-    // },
   },
   {
     avatar: 'https://cdn-icons-png.flaticon.com/512/8632/8632541.png',
@@ -51,9 +35,6 @@ export const items: Item[] = [
     label: 'Nope',
     value: 'nope',
     gif: 'https://gifdb.com/images/high/wanda-maximoff-no-nope-nuh-uh-phixzdyfswrjazl5.webp',
-    // calculateFn: (beforeCal: number) => {
-    //   return beforeCal;
-    // },
   },
   {
     avatar: 'https://cdn-icons-png.flaticon.com/512/2746/2746930.png',
@@ -61,9 +42,6 @@ export const items: Item[] = [
     label: 'Attack',
     value: 'attack',
     gif: 'https://gifdb.com/images/high/cute-cartoon-peach-cat-angry-ckf0hx9571l5j10j.webp',
-    // calculateFn: (beforeCal: number) => {
-    //   return beforeCal;
-    // },
   },
   {
     avatar: 'https://cdn-icons-png.flaticon.com/512/3392/3392750.png',
@@ -71,9 +49,6 @@ export const items: Item[] = [
     label: 'Strike',
     value: 'strike',
     gif: 'https://gifdb.com/images/high/cute-cartoon-peach-cat-angry-ckf0hx9571l5j10j.webp',
-    // calculateFn: (beforeCal: number) => {
-    //   return beforeCal;
-    // },
   },
   {
     avatar: 'https://cdn-icons-png.flaticon.com/512/6482/6482271.png',
@@ -81,12 +56,6 @@ export const items: Item[] = [
     label: 'Double Bet',
     value: 'double_bet',
     gif: 'https://gifdb.com/images/high/bet-easy-button-slee4u6m7q8z9e0k.webp',
-    // calculateFn: (beforeCal: number) => {
-    //   if (beforeCal < 0) {
-    //     // TODO
-    //   }
-    //   return beforeCal;
-    // },
   },
   {
     avatar: 'https://cdn-icons-png.flaticon.com/512/9194/9194865.png',
@@ -94,9 +63,6 @@ export const items: Item[] = [
     label: 'Rescue',
     value: 'rescue',
     gif: 'https://gifdb.com/images/high/fire-car-truck-rescue-elmo-sesame-street-ipfpmlg5tcmnbpzc.webp',
-    // calculateFn: (beforeCal: number) => {
-    //   return beforeCal;
-    // },
   },
   {
     avatar: 'https://cdn-icons-png.flaticon.com/512/3466/3466282.png',
