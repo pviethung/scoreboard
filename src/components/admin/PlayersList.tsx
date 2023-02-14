@@ -3,17 +3,17 @@ import {
   useListenNewConnection,
   useListenUpdateItemInUse,
 } from '@/broadcast';
+import CountDown from '@/components/admin/CountDown';
 import GameActions from '@/components/admin/GameActions';
 import PlayersListItem from '@/components/admin/PlayersListItem';
 import QuestionsList from '@/components/admin/QuestionsList';
 import { useConfigData } from '@/store/configSlice';
-import { usePlayers } from '@/store/playersSlice';
+import { Player } from '@/types/Player';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 
-const PlayersList = () => {
-  const players = usePlayers();
+const PlayersList = ({ players }: { players: Player[] }) => {
   const playersLeft = players.filter((p) => p.point !== 0).length;
   const { currentQuest } = useConfigData();
   const scrollParent = useRef<HTMLDivElement | null>(null);
@@ -38,9 +38,6 @@ const PlayersList = () => {
   //   };
   // }, [players, progress]);
 
-  console.log('players', players);
-  console.log('progress', progress);
-
   useEffect(() => {
     if (scrollParent.current) {
       scrollParent.current.scrollTo({
@@ -53,7 +50,7 @@ const PlayersList = () => {
   return (
     <>
       {playersLeft > 0 && (
-        <div className={clsx('mt-4 flex gap-4 uppercase')}>
+        <div className={clsx('mt-4 flex items-center gap-4 uppercase')}>
           <p>
             Total players:{' '}
             <span className={clsx('text-primary')}>{players.length}</span>
@@ -62,6 +59,9 @@ const PlayersList = () => {
             Players Left:{' '}
             <span className={clsx('text-primary')}> {playersLeft}</span>
           </p>
+          <div className="ml-auto">
+            <CountDown />
+          </div>
         </div>
       )}
 

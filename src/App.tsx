@@ -33,15 +33,12 @@ const App = () => {
     };
   }, []);
 
-  console.log('progress: ', progress);
-  console.log('itemInUse: ', itemInUse);
-
   return (
     <>
       {path !== '/admin' && !hideRedirectBtn && (
         <div className={clsx('relative z-10 p-4')}>
           <button
-            className={clsx('btn-primary btn')}
+            className={clsx('btn btn-primary')}
             onClick={() => {
               window.history.pushState({}, '', '/admin');
               setPath('/admin');
@@ -60,7 +57,6 @@ const App = () => {
         {path === '/' && (
           <Home
             players={players}
-            listenType={listenType}
             progress={progress}
             isAdmin={false}
             itemInUse={itemInUse}
@@ -69,7 +65,6 @@ const App = () => {
         {path === '/leaderboard' && (
           <Home
             players={players}
-            listenType={listenType}
             progress={progress}
             isAdmin={true}
             itemInUse={itemInUse}

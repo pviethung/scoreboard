@@ -5,6 +5,7 @@ import Logos from '@/components/elements/Logos';
 import PlayerRank from '@/components/elements/PlayerRank';
 import ItemEffect from '@/components/home/ItemEffect';
 import ItemsDesc from '@/components/home/ItemsDesc';
+import WinEffect from '@/components/home/WinEffect';
 import { UpdateAppProgess, UpdateItemInUse } from '@/types/BroadCast';
 import { Player } from '@/types/Player';
 import clsx from 'clsx';
@@ -465,7 +466,12 @@ const LeaderChart = ({
       </div>
 
       <ItemsDesc />
-      {gameEnded && <Confetti />}
+      {gameEnded && (
+        <>
+          <WinEffect player={player1} />
+          <Confetti />
+        </>
+      )}
     </>
   );
 };

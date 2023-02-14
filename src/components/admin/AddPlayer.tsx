@@ -6,13 +6,12 @@ import randomId from '@/utils/randomId';
 import clsx from 'clsx';
 import { useState } from 'react';
 
-const AddPlayer = () => {
+const AddPlayer = ({ players }: { players: Player[] }) => {
   const { initialPoint, numOfTeam } = useConfigData();
   const [names, setNames] = useState<string[]>(new Array(numOfTeam).fill(''));
   const { addPlayer } = usePlayersActions();
-  const [submitted, setSubmitted] = useState(false);
 
-  if (submitted) {
+  if (players.length > 0) {
     return null;
   }
 
@@ -36,7 +35,6 @@ const AddPlayer = () => {
           addPlayer(player);
         }
         setNames((prev) => new Array(numOfTeam).fill(''));
-        setSubmitted(true);
       }}
       className={clsx('flex')}
     >
