@@ -16,9 +16,6 @@ const ItemEffect = ({
   const [content, setContent] = useState<React.ReactNode>('');
   const [show, setShow] = useState(false);
 
-  console.log('effect item', itemInUse);
-  console.log('effect players', players);
-
   useEffect(() => {
     if (!itemInUse || !itemInUse.item) return;
     if (!players) return;

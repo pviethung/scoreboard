@@ -2,7 +2,9 @@ import { Item } from '@/types/Item';
 import { Player } from '@/types/Player';
 
 export const BROASCAST_ID = 'SCORE_CHANNEL';
-export const SOCKET_URL = 'https://scoreboard-socket-ts.onrender.com/';
+// export const SOCKET_URL = 'https://scoreboard-socket-ts-production.up.railway.app/';
+export const SOCKET_URL = 'http://localhost:4000/';
+
 
 // BROADCAST CHANNEL
 export enum BroadCastTypes {
