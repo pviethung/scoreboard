@@ -36,10 +36,6 @@ const AnswerInput = ({
   }
 
   useEffect(() => {
-    console.log(player);
-  }, [usedItem, bettedPoint]);
-
-  useEffect(() => {
     // trigger store actions
     setCurrentTurnPlayerPoint(playerId, earnedPoint);
   }, [earnedPoint]);
@@ -175,7 +171,7 @@ const AnswerInput = ({
         <div className={clsx('btn-group w-full', '[&>button]:flex-1')}>
           <button
             className={clsx(
-              'btn btn-error btn-sm !rounded-tl-none rounded-br-none text-3xl ',
+              'btn-error btn-sm btn !rounded-tl-none rounded-br-none text-3xl ',
               {
                 'btn-disabled': answered || disabled,
               }
@@ -195,7 +191,7 @@ const AnswerInput = ({
           </button>
           <button
             className={clsx(
-              'btn btn-primary btn-sm rounded-tr-none rounded-br-none text-3xl ',
+              'btn-primary btn-sm btn rounded-tr-none rounded-br-none text-3xl ',
               {
                 'btn-disabled': !answered || disabled,
               }
@@ -219,7 +215,7 @@ const AnswerInput = ({
           </button>
           <button
             className={clsx(
-              'btn btn-success btn-sm rounded-tl-none rounded-bl-none !rounded-tr-none text-3xl',
+              'btn-success btn-sm btn rounded-tl-none rounded-bl-none !rounded-tr-none text-3xl',
               {
                 'btn-disabled': answered || disabled,
               }

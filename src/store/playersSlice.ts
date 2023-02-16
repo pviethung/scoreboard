@@ -58,8 +58,6 @@ const createPlayersSlice: StateCreator<PlayersSlice, [], [], PlayersSlice> = (
     addPlayer: (player) =>
       set((state) => {
         state.players.push(player);
-        console.log('add player');
-
         return state;
       }),
     reorderPlayers: () => {

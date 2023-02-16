@@ -117,8 +117,6 @@ const ItemInUse = ({
   player: Player;
   itemInUse: UpdateItemInUse['data'] | null;
 }) => {
-  console.log(itemInUse);
-
   return (
     <>
       {itemInUse?.playerId === player.id && itemInUse?.item && (
